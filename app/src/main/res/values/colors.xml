@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="normal_white">#bfd6f6</color>
+    <color name="blue1">#8dbdff</color>
+    <color name="blue2">#64a1f4</color>
+    <color name="blue3">#4a91f2</color>
+    <color name="blue4">#3b7dd8</color>
+    <color name="blue5">#0091EA</color>
+    <color name="light_black">#70000000</color>
+    <color name="text_color">#1C1C1C</color>
+
+
+    <color name="instagram_purple_violet">#8a3ab9</color>
+    <color name="instagram_red_orange">#e95950</color>
+    <color name="instagram_red_violet">#bc2a8d</color>
+    <color name="instagram_yellow">#fccc63</color>
+    <color name="instagram_orange">#fbad50</color>
+    <color name="instagram_maroon">#cd486b</color>
+    <color name="instagram_blue">#4c68d7</color>
+
+
+    <color name="colorPrimaryVariant">#FF6991</color>
+    <color name="lightPink">#FF8DAB</color>
+    <color name="colorPrimary">#FF4C7B</color>
+    <color name="red">#FF0000</color>
+    <color name="green">#46B500</color>
+
+
+</resources>

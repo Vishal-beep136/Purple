@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_my_mall"
+            android:icon="@drawable/ic_shopping_bag"
+            android:title="My Purple"/>
+
+        <item
+            android:id="@+id/nav_my_orders"
+            android:icon="@drawable/ic_my_order"
+            android:title="My Orders" />
+        <item
+            android:id="@+id/nav_my_rewards"
+            android:icon="@drawable/ic_rewards"
+            android:title="My Rewards" />
+        <item
+            android:id="@+id/nav_my_cart"
+            android:icon="@drawable/ic_shopping_cart"
+            android:title="My Cart" />
+
+        <item
+            android:id="@+id/nav_my_wishlist"
+            android:icon="@drawable/ic_wishlist"
+            android:title="My Wishlist" />
+
+        <item
+            android:id="@+id/nav_my_account"
+            android:icon="@drawable/ic_user"
+            android:title="My Account" />
+
+    </group>
+
+    <item
+        android:id="@+id/log_out"
+        android:icon="@drawable/ic_logout"
+        android:title="Log out" />
+
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_call_us"
+                android:icon="@drawable/ic_baseline_local_phone_24"
+                android:title="call us" />
+
+            <item
+                android:id="@+id/nav_send_message"
+                android:icon="@drawable/ic_baseline_send_24"
+                android:title="send Message" />
+
+            <item
+                android:id="@+id/share"
+                android:icon="@drawable/ic_baseline_share_24"
+                android:title="share us" />
+        </menu>
+
+
+    </item>
+
+</menu>

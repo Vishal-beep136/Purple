@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:elevation="@dimen/_3mdp"
+    android:background="@drawable/slider_background"
+    android:layout_margin="@dimen/_7mdp"
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/grid_layout_product_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="#Trending"
+        android:textSize="@dimen/_15font_mdp"
+        android:textColor="@color/text_color"
+        android:textStyle="bold"
+
+        app:layout_constraintBottom_toBottomOf="@+id/grid_product_layout_viewall_btn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/grid_product_layout_viewall_btn" />
+
+    <Button
+        android:id="@+id/grid_product_layout_viewall_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="View All"
+        android:textSize="@dimen/_10font_mdp"
+        android:textColor="@color/white"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <GridView
+        android:id="@+id/grid_product_layout_gridview"
+        android:layout_width="0dp"
+        android:layout_height="370dp"
+        android:layout_marginBottom="8dp"
+        android:background="#E3E1E1"
+        android:horizontalSpacing="@dimen/_1mdp"
+        android:numColumns="2"
+        android:verticalSpacing="@dimen/_1mdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/grid_product_layout_viewall_btn" />
+</androidx.constraintlayout.widget.ConstraintLayout>
