@@ -17,12 +17,17 @@ import com.google.android.material.tabs.TabLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import kaitka.vishal.meeta.purple_ecommerce.Adapters.ProductDetailsAdapter;
 import kaitka.vishal.meeta.purple_ecommerce.Adapters.ProductImagesAdapter;
 
 public class ProductDetailsActivity extends AppCompatActivity {
 
     private ViewPager productImagesViewPager;
     private TabLayout viewpagerIndicator;
+
+    private ViewPager productDetailsViewPager;
+    private TabLayout productDetailsTabLayout;
+
     private static Boolean ALREADY_ADDED_TO_WISHLIST = false;
     private FloatingActionButton addToWishlistBtn;
 
@@ -35,6 +40,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
         productImagesViewPager = findViewById(R.id.product_images_viewpager);
         viewpagerIndicator = findViewById(R.id.viewpager_indicator);
         addToWishlistBtn = findViewById(R.id.add_to_wishlist_btn);
+        productDetailsViewPager = findViewById(R.id.product_details_viewpager);
+        productDetailsTabLayout = findViewById(R.id.product_details_tablayout);
 
         List<Integer> productImages = new ArrayList<>();
         productImages.add(R.drawable.iphone_12);
@@ -62,6 +69,24 @@ public class ProductDetailsActivity extends AppCompatActivity {
             }
         });
 
+        productDetailsViewPager.setAdapter(new ProductDetailsAdapter(getSupportFragmentManager(), productDetailsTabLayout.getTabCount()));
+        productDetailsViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(productDetailsTabLayout));
+        productDetailsTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                productDetailsViewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
 
     }

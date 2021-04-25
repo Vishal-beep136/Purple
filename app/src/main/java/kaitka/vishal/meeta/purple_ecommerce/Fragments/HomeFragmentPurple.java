@@ -1,4 +1,4 @@
-package kaitka.vishal.meeta.purple_ecommerce;
+package kaitka.vishal.meeta.purple_ecommerce.Fragments;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -33,6 +33,7 @@ import kaitka.vishal.meeta.purple_ecommerce.Modellls.CategoryModel;
 import kaitka.vishal.meeta.purple_ecommerce.Modellls.HomePageModel;
 import kaitka.vishal.meeta.purple_ecommerce.Modellls.HorizontalProductScrollModel;
 import kaitka.vishal.meeta.purple_ecommerce.Modellls.SliderModel;
+import kaitka.vishal.meeta.purple_ecommerce.R;
 import kaitka.vishal.meeta.purple_ecommerce.ui.slideshow.SlideshowViewModel;
 
 /**

@@ -1,4 +1,4 @@
-package kaitka.vishal.meeta.purple_ecommerce;
+package kaitka.vishal.meeta.purple_ecommerce.Fragments;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -24,11 +24,12 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+
+import kaitka.vishal.meeta.purple_ecommerce.R;
 
 /**
  * A simple {@link Fragment} subclass.

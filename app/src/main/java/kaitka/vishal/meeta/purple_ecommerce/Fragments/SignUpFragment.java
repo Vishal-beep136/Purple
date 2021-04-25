@@ -1,4 +1,4 @@
-package kaitka.vishal.meeta.purple_ecommerce;
+package kaitka.vishal.meeta.purple_ecommerce.Fragments;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -32,6 +32,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import kaitka.vishal.meeta.purple_ecommerce.MainActivity;
+import kaitka.vishal.meeta.purple_ecommerce.R;
 
 /**
  * A simple {@link Fragment} subclass.

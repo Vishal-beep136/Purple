@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.widget.FrameLayout;
 
-import kaitka.vishal.meeta.purple_ecommerce.databinding.ActivityRegisterBinding;
+import kaitka.vishal.meeta.purple_ecommerce.Fragments.SignInFragment;
 
 public class RegisterActivity extends AppCompatActivity {
 
