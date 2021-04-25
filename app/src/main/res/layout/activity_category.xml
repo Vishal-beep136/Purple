@@ -6,23 +6,25 @@
     android:layout_height="match_parent"
     tools:context=".CategoryActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/Theme.Purple.AppBarOverlay"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+<!--    <com.google.android.material.appbar.AppBarLayout-->
+<!--        android:id="@+id/appBarLayout"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:theme="@style/Theme.Purple.AppBarOverlay"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent">-->
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
-            app:popupTheme="@style/Theme.Purple"></androidx.appcompat.widget.Toolbar>
+<!--&lt;!&ndash;        <androidx.appcompat.widget.Toolbar&ndash;&gt;-->
+<!--&lt;!&ndash;            android:id="@+id/toolbar"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_width="match_parent"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_height="?attr/actionBarSize"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:background="@color/colorPrimary"&ndash;&gt;-->
+<!--&lt;!&ndash;            app:popupTheme="@style/Theme.Purple">&ndash;&gt;-->
 
-    </com.google.android.material.appbar.AppBarLayout>
+<!--&lt;!&ndash;        </androidx.appcompat.widget.Toolbar>&ndash;&gt;-->
+
+<!--    </com.google.android.material.appbar.AppBarLayout>-->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/category_recyclerview"
@@ -31,7 +33,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
