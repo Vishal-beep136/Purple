@@ -1,5 +1,6 @@
 package kaitka.vishal.meeta.purple_ecommerce.Adapters;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import kaitka.vishal.meeta.purple_ecommerce.Modellls.HorizontalProductScrollModel;
+import kaitka.vishal.meeta.purple_ecommerce.ProductDetailsActivity;
 import kaitka.vishal.meeta.purple_ecommerce.R;
 
 public class HorizontalProductScrollAdapter extends RecyclerView.Adapter<HorizontalProductScrollAdapter.ViewHolder> {
@@ -68,6 +70,15 @@ public class HorizontalProductScrollAdapter extends RecyclerView.Adapter<Horizon
             productTitle = itemView.findViewById(R.id.h_s_product_title);
             productDescription = itemView.findViewById(R.id.h_s_product_description);
             productPrice = itemView.findViewById(R.id.h_s_product_price);
+
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent productDetailsIntent = new Intent(itemView.getContext(), ProductDetailsActivity.class);
+                    itemView.getContext().startActivity(productDetailsIntent);
+                }
+            });
 
         }
         private void setProductImage(int resource){
