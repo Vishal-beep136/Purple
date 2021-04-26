@@ -114,7 +114,7 @@
             android:layout_weight="1"
             android:max="100"
             android:progress="40"
-            android:progressTint="#FFD600" />
+            android:progressTint="#FFAB00" />
 
         <ProgressBar
             android:id="@+id/progressBar4"
@@ -126,7 +126,7 @@
             android:layout_weight="1"
             android:max="100"
             android:progress="30"
-            android:progressTint="#FFD600" />
+            android:progressTint="#FFAB00" />
 
         <ProgressBar
             android:id="@+id/progressBar5"
@@ -375,7 +375,9 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_your_ratings">

@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
@@ -24,6 +26,11 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
     private ViewPager productImagesViewPager;
     private TabLayout viewpagerIndicator;
+
+    /////rating layout starts here
+    private LinearLayout rateNowContainer;
+
+    /////rating layout ends here
 
     private ViewPager productDetailsViewPager;
     private TabLayout productDetailsTabLayout;
@@ -88,8 +95,34 @@ public class ProductDetailsActivity extends AppCompatActivity {
             }
         });
 
+        /////rating layout starts here
+        rateNowContainer = findViewById(R.id.rate_now_container);
+        for (int x = 0; x<rateNowContainer.getChildCount(); x++){
+            final int startPostion = x;
+            rateNowContainer.getChildAt(x).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setRating(startPostion);
+                }
+            });
+
+        }
+        /////rating layout ends here
+
+
 
     }
+
+    private void setRating(int startPostion) {
+        for (int x = 0; x<rateNowContainer.getChildCount(); x++){
+            ImageView starBtn = (ImageView)rateNowContainer.getChildAt(x);
+            starBtn.setImageTintList(ColorStateList.valueOf(Color.parseColor("#bebebe")));
+            if (x <= startPostion){
+                starBtn.setImageTintList(ColorStateList.valueOf(Color.parseColor("#ffbb00")));
+            }
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
