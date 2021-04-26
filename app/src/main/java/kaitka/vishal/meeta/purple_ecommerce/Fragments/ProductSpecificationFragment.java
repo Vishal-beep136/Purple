@@ -48,15 +48,40 @@ public class ProductSpecificationFragment extends Fragment {
         productSpecificationRecyclerView.setLayoutManager(linearLayoutManager);
 
         List<ProductSpecificationModel> productSpecificationModelList = new ArrayList<>();
-        productSpecificationModelList.add(new ProductSpecificationModel("RAM" , "4GB"));
-        productSpecificationModelList.add(new ProductSpecificationModel("RAM" , "4GB"));
-        productSpecificationModelList.add(new ProductSpecificationModel("RAM" , "4GB"));
-        productSpecificationModelList.add(new ProductSpecificationModel("RAM" , "4GB"));
-        productSpecificationModelList.add(new ProductSpecificationModel("RAM" , "4GB"));
-        productSpecificationModelList.add(new ProductSpecificationModel("RAM" , "4GB"));
-        productSpecificationModelList.add(new ProductSpecificationModel("RAM" , "4GB"));
-        productSpecificationModelList.add(new ProductSpecificationModel("RAM" , "4GB"));
-        productSpecificationModelList.add(new ProductSpecificationModel("RAM" , "4GB"));
+        productSpecificationModelList.add(new ProductSpecificationModel(0, "General"));
+        productSpecificationModelList.add(new ProductSpecificationModel(1,"RAM" , "16GB"));
+        productSpecificationModelList.add(new ProductSpecificationModel(1,"Storage" , "256GB"));
+        productSpecificationModelList.add(new ProductSpecificationModel(1,"Brand" , "Apple"));
+        productSpecificationModelList.add(new ProductSpecificationModel(1,"Made" , "California"));
+        productSpecificationModelList.add(new ProductSpecificationModel(1,"Design by" , "Loki Fergutation"));
+        productSpecificationModelList.add(new ProductSpecificationModel(1,"Used by" , "Tony Stark"));
+        productSpecificationModelList.add(new ProductSpecificationModel(0, "Display"));
+        productSpecificationModelList.add(new ProductSpecificationModel(1,"almond screen" , "1920 X 1820"));
+        productSpecificationModelList.add(new ProductSpecificationModel(1,"blue rays" , "190"));
+        productSpecificationModelList.add(new ProductSpecificationModel(1,"heart by" , "crish hemswarth"));
+        productSpecificationModelList.add(new ProductSpecificationModel(1,"almond screen" , "1920 X 1820"));
+        productSpecificationModelList.add(new ProductSpecificationModel(1,"almond screen" , "1920 X 1820"));
+        productSpecificationModelList.add(new ProductSpecificationModel(1,"almond screen" , "1920 X 1820"));
+
+        productSpecificationModelList.add(new ProductSpecificationModel(0, "General"));
+        productSpecificationModelList.add(new ProductSpecificationModel(1,"RAM" , "16GB"));
+        productSpecificationModelList.add(new ProductSpecificationModel(1,"Storage" , "256GB"));
+        productSpecificationModelList.add(new ProductSpecificationModel(1,"Brand" , "Apple"));
+        productSpecificationModelList.add(new ProductSpecificationModel(1,"Made" , "California"));
+        productSpecificationModelList.add(new ProductSpecificationModel(1,"Design by" , "Loki Fergutation"));
+        productSpecificationModelList.add(new ProductSpecificationModel(1,"Used by" , "Tony Stark"));
+        productSpecificationModelList.add(new ProductSpecificationModel(0, "Display"));
+        productSpecificationModelList.add(new ProductSpecificationModel(1,"almond screen" , "1920 X 1820"));
+        productSpecificationModelList.add(new ProductSpecificationModel(1,"blue rays" , "190"));
+        productSpecificationModelList.add(new ProductSpecificationModel(1,"heart by" , "crish hemswarth"));
+        productSpecificationModelList.add(new ProductSpecificationModel(1,"almond screen" , "1920 X 1820"));
+        productSpecificationModelList.add(new ProductSpecificationModel(1,"almond screen" , "1920 X 1820"));
+        productSpecificationModelList.add(new ProductSpecificationModel(1,"almond screen" , "1920 X 1820"));
+
+
+
+
+
 
 
         ProductSpecificationAdapter productSpecificationAdapter = new ProductSpecificationAdapter(productSpecificationModelList);
