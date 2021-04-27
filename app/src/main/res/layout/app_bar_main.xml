@@ -21,11 +21,12 @@
 
             <!--            here below you can customize the below imageview to text view-->
 
-<!--            <ImageView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="@dimen/_50mdp"-->
-<!--                android:adjustViewBounds="true"-->
-<!--                android:src="@drawable/text_logo" />-->
+            <ImageView
+                android:id="@+id/actionBar_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_50mdp"
+                android:adjustViewBounds="true"
+                android:src="@drawable/text_logo" />
 
 
         </androidx.appcompat.widget.Toolbar>

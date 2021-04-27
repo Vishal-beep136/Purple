@@ -5,6 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white"
     android:elevation="3dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -32,12 +34,13 @@
 
     <ImageView
         android:id="@+id/free_coupen_icon"
-        android:layout_width="@dimen/_13mdp"
-        android:layout_height="@dimen/_13mdp"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_free_coupen"
         app:layout_constraintStart_toStartOf="@+id/product_title_of_cart"
-        app:layout_constraintTop_toBottomOf="@+id/product_title_of_cart"
-        app:tint="#8000ff"
-        app:srcCompat="@drawable/ic_label" />
+        app:layout_constraintTop_toTopOf="@+id/tv_free_coupen"
+        app:srcCompat="@drawable/ic_label"
+        app:tint="#8000ff" />
 
     <TextView
         android:id="@+id/tv_free_coupen"
@@ -69,6 +72,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:text="₹50,999.00/-"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/product_price_of_cart"
         app:layout_constraintEnd_toStartOf="@+id/product_price_of_cart" />
 

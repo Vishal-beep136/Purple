@@ -49,4 +49,9 @@ quia. Quo neque error repudiandae fuga?
 
 
     <string name="remove_item">Remove Item</string>
+
+    <string name="free_text">Free </string>
+    <string name="coupen1_text"> Coupen</string>
+    <string name="coupen2_text"> Coupens</string>
+    <string name="offers_applied_text"> Offers Applied</string>
 </resources>

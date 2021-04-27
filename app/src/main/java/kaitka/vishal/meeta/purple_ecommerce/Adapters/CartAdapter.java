@@ -16,7 +16,7 @@ import kaitka.vishal.meeta.purple_ecommerce.R;
 
 public class CartAdapter extends RecyclerView.Adapter {
 
-    private List<CartItemModel> cartItemModelList;
+    private final List<CartItemModel> cartItemModelList;
 
     public CartAdapter(List<CartItemModel> cartItemModelList) {
         this.cartItemModelList = cartItemModelList;
@@ -75,7 +75,6 @@ public class CartAdapter extends RecyclerView.Adapter {
                 ((CartTotalAmountViewholder)holder).setTotalAmount(totalItems,totalItemPrice,deliveryPrice,totalAmount,savedAmount);
                 break;
             default:
-                return;
         }
     }
 
@@ -84,16 +83,17 @@ public class CartAdapter extends RecyclerView.Adapter {
         return cartItemModelList.size();
     }
 
-    class CartItemViewholder extends RecyclerView.ViewHolder {
-        private ImageView productImage;
-        private ImageView freeCoupenIcon;
-        private TextView productTitle;
-        private TextView freeCoupens;
-        private TextView productPrice;
-        private TextView cuttedPrice;
-        private TextView offersApplied;
-        private TextView coupensApplied;
-        private TextView productQuantity;
+
+     class CartItemViewholder extends RecyclerView.ViewHolder {
+        private  ImageView productImage;
+        private  ImageView freeCoupenIcon;
+        private  TextView productTitle;
+        private  TextView freeCoupens;
+        private  TextView productPrice;
+        private  TextView cuttedPrice;
+        private  TextView offersApplied;
+        private  TextView coupensApplied;
+        private  TextView productQuantity;
 
 
         public CartItemViewholder(@NonNull View itemView) {
@@ -117,9 +117,9 @@ public class CartAdapter extends RecyclerView.Adapter {
                 freeCoupenIcon.setVisibility(View.VISIBLE);
                 freeCoupens.setVisibility(View.VISIBLE);
                 if (freeCoupensNo == 1) {
-                    freeCoupens.setText("free" + freeCoupensNo + "Coupen");
+                    freeCoupens.setText("free " + freeCoupensNo + " Coupen");
                 } else {
-                    freeCoupens.setText("free" + freeCoupensNo + "Coupens");
+                    freeCoupens.setText("free " + freeCoupensNo + " Coupens");
                 }
             } else {
                 freeCoupenIcon.setVisibility(View.INVISIBLE);
@@ -130,7 +130,7 @@ public class CartAdapter extends RecyclerView.Adapter {
 
             if (offersAppliedNo > 0) {
                 offersApplied.setVisibility(View.VISIBLE);
-                offersApplied.setText(offersAppliedNo + "offers applied");
+                offersApplied.setText(offersAppliedNo + " Offers Applied");
 
             } else {
                 offersApplied.setVisibility(View.INVISIBLE);
@@ -138,6 +138,7 @@ public class CartAdapter extends RecyclerView.Adapter {
 
         }
     }
+
 
 
     class CartTotalAmountViewholder extends RecyclerView.ViewHolder {

@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import android.view.Menu;
+import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -29,24 +31,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final  int CART_FRAGMENT = 1;
 
     private FrameLayout frameLayout;
-    private static int currentFragment;
+    private static int currentFragment = -1;
     private NavigationView navigationView;
+    private ImageView actionBarLogo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        actionBarLogo = findViewById(R.id.actionBar_logo);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Purple");
-
-//        getSupportActionBar().setDisplayShowTitleEnabled(false);
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         if (currentFragment == HOME_FRAGMENT) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
             getMenuInflater().inflate(R.menu.main, menu);
         }
         return true;
@@ -91,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         }
         else if (id == R.id.main_cart_icon){
+            actionBarLogo.setVisibility(View.GONE);
             myCart();
             return true;
         }
@@ -100,6 +102,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void myCart() {
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setTitle("My Cart");
         invalidateOptionsMenu();
         setFragment(new MyCartFragmentFragment(), CART_FRAGMENT);
         navigationView.getMenu().getItem(3).setChecked(true);
@@ -111,6 +115,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_my_mall){
+            actionBarLogo.setVisibility(View.VISIBLE);
+            invalidateOptionsMenu();
             setFragment(new HomeFragmentPurple(), HOME_FRAGMENT);
         }
         else if (id == R.id.nav_my_orders){
@@ -120,6 +126,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         }
         else if (id == R.id.nav_my_cart){
+            actionBarLogo.setVisibility(View.GONE);
             myCart();
         }
         else if (id == R.id.nav_my_wishlist){
@@ -138,9 +145,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void setFragment(Fragment fragment, int fragmentNo){
-        currentFragment = fragmentNo;
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(frameLayout.getId(), fragment);
-        fragmentTransaction.commit();
+        if (fragmentNo != currentFragment){
+            currentFragment = fragmentNo;
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+            fragmentTransaction.replace(frameLayout.getId(), fragment);
+            fragmentTransaction.commit();
+        }
+        
+
     }
 }
