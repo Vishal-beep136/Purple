@@ -54,4 +54,18 @@ quia. Quo neque error repudiandae fuga?
     <string name="coupen1_text"> Coupen</string>
     <string name="coupen2_text"> Coupens</string>
     <string name="offers_applied_text"> Offers Applied</string>
+
+    <string name="address">Street:  4, C, Nanddham Estate, Marol Morshi Rd, Marol, Andheri(e)
+
+City:   Bangolore
+
+State/province/area:    Karnatka
+
+Phone number  02228502935
+
+Zip code  400059
+
+Country calling code  +91
+
+Country  India</string>
 </resources>

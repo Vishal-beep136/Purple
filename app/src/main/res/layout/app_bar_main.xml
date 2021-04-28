@@ -19,7 +19,7 @@
             app:popupTheme="@style/Theme.Purple">
 
 
-            <!--            here below you can customize the below imageview to text view-->
+
 
             <ImageView
                 android:id="@+id/actionBar_logo"

@@ -32,6 +32,8 @@
     <color name="colorPrimary">#FF0043</color>
     <color name="red">#FF0000</color>
     <color name="green">#006705</color>
+    <color name="grey">#878787</color>
+    <color name="success_green">#00A107</color>
 
 
 </resources>

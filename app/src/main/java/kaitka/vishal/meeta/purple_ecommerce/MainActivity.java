@@ -22,13 +22,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import kaitka.vishal.meeta.purple_ecommerce.Fragments.HomeFragmentPurple;
-import kaitka.vishal.meeta.purple_ecommerce.Fragments.MyCartFragmentFragment;
+import kaitka.vishal.meeta.purple_ecommerce.Fragments.MyCartFragment;
+import kaitka.vishal.meeta.purple_ecommerce.Fragments.MyOrdersFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private AppBarConfiguration mAppBarConfiguration;
     private static final int HOME_FRAGMENT = 0;
     private static final  int CART_FRAGMENT = 1;
+    private static final int ORDERS_FRAGMENT = 2;
 
     private FrameLayout frameLayout;
     private static int currentFragment = -1;
@@ -93,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         else if (id == R.id.main_cart_icon){
             actionBarLogo.setVisibility(View.GONE);
-            myCart();
+            gotoFragment("My Cart", new MyCartFragment(), CART_FRAGMENT);
             return true;
         }
 
@@ -101,12 +103,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    private void myCart() {
+    private void gotoFragment(String title, Fragment fragment, int fragmentNo) {
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        getSupportActionBar().setTitle("My Cart");
+        getSupportActionBar().setTitle(title);
         invalidateOptionsMenu();
-        setFragment(new MyCartFragmentFragment(), CART_FRAGMENT);
-        navigationView.getMenu().getItem(3).setChecked(true);
+        setFragment(fragment, fragmentNo);
+        if (fragmentNo == CART_FRAGMENT){
+            navigationView.getMenu().getItem(3).setChecked(true);
+        }
+
     }
 
 
@@ -120,14 +125,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             setFragment(new HomeFragmentPurple(), HOME_FRAGMENT);
         }
         else if (id == R.id.nav_my_orders){
-
+            gotoFragment("My Orders", new MyOrdersFragment(), ORDERS_FRAGMENT);
         }
         else if (id == R.id.nav_my_rewards){
 
         }
         else if (id == R.id.nav_my_cart){
             actionBarLogo.setVisibility(View.GONE);
-            myCart();
+            gotoFragment("My Cart", new MyCartFragment(), CART_FRAGMENT);
         }
         else if (id == R.id.nav_my_wishlist){
 

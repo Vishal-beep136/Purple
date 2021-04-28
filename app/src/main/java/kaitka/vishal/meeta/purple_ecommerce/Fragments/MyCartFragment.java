@@ -22,10 +22,10 @@ import kaitka.vishal.meeta.purple_ecommerce.R;
  * A simple {@link Fragment} subclass.
  * create an instance of this fragment.
  */
-public class MyCartFragmentFragment extends Fragment {
+public class MyCartFragment extends Fragment {
 
 
-    public MyCartFragmentFragment() {
+    public MyCartFragment() {
         // Required empty public constructor
     }
 
