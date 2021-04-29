@@ -24,6 +24,7 @@ import androidx.appcompat.widget.Toolbar;
 import kaitka.vishal.meeta.purple_ecommerce.Fragments.HomeFragmentPurple;
 import kaitka.vishal.meeta.purple_ecommerce.Fragments.MyCartFragment;
 import kaitka.vishal.meeta.purple_ecommerce.Fragments.MyOrdersFragment;
+import kaitka.vishal.meeta.purple_ecommerce.Fragments.MyWishlistFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final int HOME_FRAGMENT = 0;
     private static final  int CART_FRAGMENT = 1;
     private static final int ORDERS_FRAGMENT = 2;
+    private static final  int WISHLIST_FRAGMENT = 3;
 
     private FrameLayout frameLayout;
     private static int currentFragment = -1;
@@ -65,7 +67,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if (currentFragment == HOME_FRAGMENT){
+                super.onBackPressed();
+            }
+            else {
+                actionBarLogo.setVisibility(View.VISIBLE);
+                invalidateOptionsMenu();
+                setFragment(new HomeFragmentPurple(), HOME_FRAGMENT);
+                navigationView.getMenu().getItem(0).setChecked(true);
+            }
         }
     }
 
@@ -125,6 +135,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             setFragment(new HomeFragmentPurple(), HOME_FRAGMENT);
         }
         else if (id == R.id.nav_my_orders){
+            actionBarLogo.setVisibility(View.GONE);
             gotoFragment("My Orders", new MyOrdersFragment(), ORDERS_FRAGMENT);
         }
         else if (id == R.id.nav_my_rewards){
@@ -133,8 +144,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         else if (id == R.id.nav_my_cart){
             actionBarLogo.setVisibility(View.GONE);
             gotoFragment("My Cart", new MyCartFragment(), CART_FRAGMENT);
+
         }
         else if (id == R.id.nav_my_wishlist){
+            actionBarLogo.setVisibility(View.GONE);
+            gotoFragment("My Wishlist", new MyWishlistFragment(),WISHLIST_FRAGMENT);
 
         }
         else if (id == R.id.nav_my_account){
