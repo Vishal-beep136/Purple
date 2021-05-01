@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import kaitka.vishal.meeta.purple_ecommerce.Activites.AddAddressActivity;
 import kaitka.vishal.meeta.purple_ecommerce.Activites.DeliveryActivity;
 import kaitka.vishal.meeta.purple_ecommerce.Adapters.CartAdapter;
 import kaitka.vishal.meeta.purple_ecommerce.Modellls.CartItemModel;
@@ -60,7 +61,7 @@ public class MyCartFragment extends Fragment {
         continueBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent deliveryIntent = new Intent(getContext(), DeliveryActivity.class);
+                Intent deliveryIntent = new Intent(getContext(), AddAddressActivity.class);
                 getContext().startActivity(deliveryIntent);
             }
         });
