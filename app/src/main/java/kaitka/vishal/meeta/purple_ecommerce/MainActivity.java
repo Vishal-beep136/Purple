@@ -1,11 +1,14 @@
 package kaitka.vishal.meeta.purple_ecommerce;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import android.view.Menu;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
@@ -24,6 +27,7 @@ import androidx.appcompat.widget.Toolbar;
 import kaitka.vishal.meeta.purple_ecommerce.Fragments.HomeFragmentPurple;
 import kaitka.vishal.meeta.purple_ecommerce.Fragments.MyCartFragment;
 import kaitka.vishal.meeta.purple_ecommerce.Fragments.MyOrdersFragment;
+import kaitka.vishal.meeta.purple_ecommerce.Fragments.MyRewardsFragment;
 import kaitka.vishal.meeta.purple_ecommerce.Fragments.MyWishlistFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -33,19 +37,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final  int CART_FRAGMENT = 1;
     private static final int ORDERS_FRAGMENT = 2;
     private static final  int WISHLIST_FRAGMENT = 3;
+    private static final  int REWARDS_FRAGMENT = 4;
 
     private FrameLayout frameLayout;
     private static int currentFragment = -1;
     private NavigationView navigationView;
     private ImageView actionBarLogo;
+    private Window window;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         actionBarLogo = findViewById(R.id.actionBar_logo);
         setSupportActionBar(toolbar);
+
+        window = getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -104,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         }
         else if (id == R.id.main_cart_icon){
-            actionBarLogo.setVisibility(View.GONE);
+            hideAppLogo();
             gotoFragment("My Cart", new MyCartFragment(), CART_FRAGMENT);
             return true;
         }
@@ -130,24 +140,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_my_mall){
+
             actionBarLogo.setVisibility(View.VISIBLE);
             invalidateOptionsMenu();
             setFragment(new HomeFragmentPurple(), HOME_FRAGMENT);
         }
         else if (id == R.id.nav_my_orders){
-            actionBarLogo.setVisibility(View.GONE);
+            hideAppLogo();
             gotoFragment("My Orders", new MyOrdersFragment(), ORDERS_FRAGMENT);
         }
         else if (id == R.id.nav_my_rewards){
+            hideAppLogo();
+            gotoFragment("My Rewards", new MyRewardsFragment(),REWARDS_FRAGMENT);
 
         }
         else if (id == R.id.nav_my_cart){
-            actionBarLogo.setVisibility(View.GONE);
+            hideAppLogo();
             gotoFragment("My Cart", new MyCartFragment(), CART_FRAGMENT);
 
         }
         else if (id == R.id.nav_my_wishlist){
-            actionBarLogo.setVisibility(View.GONE);
+            hideAppLogo();
             gotoFragment("My Wishlist", new MyWishlistFragment(),WISHLIST_FRAGMENT);
 
         }
@@ -163,8 +176,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    private void hideAppLogo() {
+        actionBarLogo.setVisibility(View.GONE);
+    }
+
     private void setFragment(Fragment fragment, int fragmentNo){
         if (fragmentNo != currentFragment){
+            if (fragmentNo == REWARDS_FRAGMENT){
+                window.setStatusBarColor(Color.parseColor("#5B04B1"));
+                toolbar.setBackgroundColor(Color.parseColor("#5B04B1"));
+            }
+            else {
+                window.setStatusBarColor(getResources().getColor(R.color.colorPrimary));
+                toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimaryVariant));
+            }
+
             currentFragment = fragmentNo;
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);

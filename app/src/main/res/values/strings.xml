@@ -14,6 +14,20 @@
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
 
+    <string name="address">Street:  4, C, Nanddham Estate, Marol Morshi Rd, Marol, Andheri(e)
+
+City:   Bangolore
+
+State/province/area:    Karnatka
+
+Phone number  02228502935
+
+Zip code  400059
+
+Country calling code  +91
+
+Country  India</string>
+
     <string name="lorem_ipsum_long">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
 molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum
 numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium
@@ -54,18 +68,10 @@ quia. Quo neque error repudiandae fuga?
     <string name="coupen1_text"> Coupen</string>
     <string name="coupen2_text"> Coupens</string>
     <string name="offers_applied_text"> Offers Applied</string>
+    <string name="rewards_text">Get 20% off on any fashions clothing so hurry grab this opportunity now you have very less time hurry grab this opportunity.</string>
 
-    <string name="address">Street:  4, C, Nanddham Estate, Marol Morshi Rd, Marol, Andheri(e)
 
-City:   Bangolore
 
-State/province/area:    Karnatka
 
-Phone number  02228502935
 
-Zip code  400059
-
-Country calling code  +91
-
-Country  India</string>
 </resources>
