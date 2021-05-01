@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import kaitka.vishal.meeta.purple_ecommerce.CategoryActivity;
+import kaitka.vishal.meeta.purple_ecommerce.Activites.CategoryActivity;
 import kaitka.vishal.meeta.purple_ecommerce.Modellls.CategoryModel;
 import kaitka.vishal.meeta.purple_ecommerce.R;
 

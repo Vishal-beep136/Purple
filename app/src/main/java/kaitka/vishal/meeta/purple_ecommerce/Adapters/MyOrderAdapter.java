@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import kaitka.vishal.meeta.purple_ecommerce.Modellls.MyOrderItemModel;
-import kaitka.vishal.meeta.purple_ecommerce.OrderDetailsActivity;
+import kaitka.vishal.meeta.purple_ecommerce.Activites.OrderDetailsActivity;
 import kaitka.vishal.meeta.purple_ecommerce.R;
 
 public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHolder> {

@@ -33,7 +33,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
-import kaitka.vishal.meeta.purple_ecommerce.MainActivity;
+import kaitka.vishal.meeta.purple_ecommerce.Activites.MainActivity;
 import kaitka.vishal.meeta.purple_ecommerce.R;
 
 /**

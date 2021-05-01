@@ -1,4 +1,4 @@
-package kaitka.vishal.meeta.purple_ecommerce;
+package kaitka.vishal.meeta.purple_ecommerce.Activites;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +8,8 @@ import android.os.SystemClock;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import kaitka.vishal.meeta.purple_ecommerce.R;
 
 public class SplashActivity extends AppCompatActivity {
 

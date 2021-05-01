@@ -11,19 +11,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Purple">
-        <activity android:name=".OrderDetailsActivity"></activity>
-        <activity android:name=".ProductDetailsActivity" />
-        <activity android:name=".CategoryActivity" />
+        <activity android:name=".Activites.DeliveryActivity"></activity>
+        <activity android:name=".Activites.OrderDetailsActivity" />
+        <activity android:name=".Activites.ProductDetailsActivity" />
+        <activity android:name=".Activites.CategoryActivity" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Activites.MainActivity"
             android:label="@string/title_activity_main"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Purple.NoActionBar" />
         <activity
-            android:name=".RegisterActivity"
+            android:name=".Activites.RegisterActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".SplashActivity"
+            android:name=".Activites.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
             <intent-filter>

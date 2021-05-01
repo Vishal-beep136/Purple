@@ -12,7 +12,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import kaitka.vishal.meeta.purple_ecommerce.Modellls.HorizontalProductScrollModel;
-import kaitka.vishal.meeta.purple_ecommerce.ProductDetailsActivity;
+import kaitka.vishal.meeta.purple_ecommerce.Activites.ProductDetailsActivity;
 import kaitka.vishal.meeta.purple_ecommerce.R;
 
 public class GridProductLayoutAdapter extends BaseAdapter {

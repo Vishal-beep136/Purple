@@ -1,4 +1,4 @@
-package kaitka.vishal.meeta.purple_ecommerce;
+package kaitka.vishal.meeta.purple_ecommerce.Activites;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -9,6 +9,7 @@ import android.view.KeyEvent;
 import android.widget.FrameLayout;
 
 import kaitka.vishal.meeta.purple_ecommerce.Fragments.SignInFragment;
+import kaitka.vishal.meeta.purple_ecommerce.R;
 
 public class RegisterActivity extends AppCompatActivity {
 

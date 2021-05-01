@@ -1,15 +1,17 @@
-package kaitka.vishal.meeta.purple_ecommerce;
+package kaitka.vishal.meeta.purple_ecommerce.Activites;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -21,6 +23,7 @@ import java.util.List;
 
 import kaitka.vishal.meeta.purple_ecommerce.Adapters.ProductDetailsAdapter;
 import kaitka.vishal.meeta.purple_ecommerce.Adapters.ProductImagesAdapter;
+import kaitka.vishal.meeta.purple_ecommerce.R;
 
 public class ProductDetailsActivity extends AppCompatActivity {
 
@@ -31,6 +34,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private LinearLayout rateNowContainer;
 
     /////rating layout ends here
+
+    private Button buyNowBtn;
 
     private ViewPager productDetailsViewPager;
     private TabLayout productDetailsTabLayout;
@@ -49,6 +54,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         addToWishlistBtn = findViewById(R.id.add_to_wishlist_btn);
         productDetailsViewPager = findViewById(R.id.product_details_viewpager);
         productDetailsTabLayout = findViewById(R.id.product_details_tablayout);
+        buyNowBtn = findViewById(R.id.buy_now_btn);
 
         List<Integer> productImages = new ArrayList<>();
         productImages.add(R.drawable.iphone_12);
@@ -108,6 +114,14 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
         }
         /////rating layout ends here
+
+        buyNowBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent deliveryIntent = new Intent(ProductDetailsActivity.this, DeliveryActivity.class);
+                startActivity(deliveryIntent);
+            }
+        });
 
 
 

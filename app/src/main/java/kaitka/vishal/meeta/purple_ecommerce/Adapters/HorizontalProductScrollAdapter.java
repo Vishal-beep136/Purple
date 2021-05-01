@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import kaitka.vishal.meeta.purple_ecommerce.Modellls.HorizontalProductScrollModel;
-import kaitka.vishal.meeta.purple_ecommerce.ProductDetailsActivity;
+import kaitka.vishal.meeta.purple_ecommerce.Activites.ProductDetailsActivity;
 import kaitka.vishal.meeta.purple_ecommerce.R;
 
 public class HorizontalProductScrollAdapter extends RecyclerView.Adapter<HorizontalProductScrollAdapter.ViewHolder> {

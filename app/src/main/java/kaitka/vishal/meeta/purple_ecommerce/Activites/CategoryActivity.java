@@ -1,4 +1,4 @@
-package kaitka.vishal.meeta.purple_ecommerce;
+package kaitka.vishal.meeta.purple_ecommerce.Activites;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +19,7 @@ import kaitka.vishal.meeta.purple_ecommerce.Modellls.CategoryModel;
 import kaitka.vishal.meeta.purple_ecommerce.Modellls.HomePageModel;
 import kaitka.vishal.meeta.purple_ecommerce.Modellls.HorizontalProductScrollModel;
 import kaitka.vishal.meeta.purple_ecommerce.Modellls.SliderModel;
+import kaitka.vishal.meeta.purple_ecommerce.R;
 
 public class CategoryActivity extends AppCompatActivity {
 

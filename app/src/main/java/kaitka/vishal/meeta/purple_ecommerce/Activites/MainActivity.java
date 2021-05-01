@@ -1,4 +1,4 @@
-package kaitka.vishal.meeta.purple_ecommerce;
+package kaitka.vishal.meeta.purple_ecommerce.Activites;
 
 
 import android.graphics.Color;
@@ -30,6 +30,7 @@ import kaitka.vishal.meeta.purple_ecommerce.Fragments.MyCartFragment;
 import kaitka.vishal.meeta.purple_ecommerce.Fragments.MyOrdersFragment;
 import kaitka.vishal.meeta.purple_ecommerce.Fragments.MyRewardsFragment;
 import kaitka.vishal.meeta.purple_ecommerce.Fragments.MyWishlistFragment;
+import kaitka.vishal.meeta.purple_ecommerce.R;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
