@@ -64,7 +64,7 @@ public class MyWishlistFragment extends Fragment {
 
         wishlistModelList.add(new WishlistModel(R.drawable.samsung,"Samsung pro max",0,"4.5",2145,"Rs.1,00,000","1,50,000", "Cash On Delivery"));
 
-        WishlistAdapter wishlistAdapter = new WishlistAdapter(wishlistModelList);
+        WishlistAdapter wishlistAdapter = new WishlistAdapter(wishlistModelList,true);
         wishlistRecyclerView.setAdapter(wishlistAdapter);
         wishlistAdapter.notifyDataSetChanged();
 

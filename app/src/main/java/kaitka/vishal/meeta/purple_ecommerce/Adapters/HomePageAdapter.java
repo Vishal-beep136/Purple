@@ -1,5 +1,6 @@
 package kaitka.vishal.meeta.purple_ecommerce.Adapters;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import kaitka.vishal.meeta.purple_ecommerce.Activites.ViewAllActivity;
 import kaitka.vishal.meeta.purple_ecommerce.Modellls.HomePageModel;
 import kaitka.vishal.meeta.purple_ecommerce.Modellls.HorizontalProductScrollModel;
 import kaitka.vishal.meeta.purple_ecommerce.Modellls.SliderModel;
@@ -251,6 +253,14 @@ public class HomePageAdapter extends RecyclerView.Adapter {
 
             if (horizontalProductScrollModelList.size() > 8){
                 horizontalLayoutViewAllBtn.setVisibility(View.VISIBLE);
+                horizontalLayoutViewAllBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent viewAllIntent = new Intent(itemView.getContext(), ViewAllActivity.class);
+                        viewAllIntent.putExtra("layout_code", 0);
+                        itemView.getContext().startActivity(viewAllIntent);
+                    }
+                });
             }
             else {
                 horizontalLayoutViewAllBtn.setVisibility(View.INVISIBLE);
@@ -281,6 +291,14 @@ public class HomePageAdapter extends RecyclerView.Adapter {
         private void setGridProductLayout(List<HorizontalProductScrollModel> horizontalProductScrollModelList, String title){
             gridLayoutTitle.setText(title);
             gridView.setAdapter(new GridProductLayoutAdapter(horizontalProductScrollModelList));
+            gridLayoutViewAllBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent viewAllIntent = new Intent(itemView.getContext(), ViewAllActivity.class);
+                    viewAllIntent.putExtra("layout_code", 1);
+                    itemView.getContext().startActivity(viewAllIntent);
+                }
+            });
         }
     }
 

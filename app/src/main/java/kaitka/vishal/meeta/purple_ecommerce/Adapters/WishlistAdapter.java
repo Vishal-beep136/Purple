@@ -1,5 +1,6 @@
 package kaitka.vishal.meeta.purple_ecommerce.Adapters;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,15 +14,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import kaitka.vishal.meeta.purple_ecommerce.Activites.ProductDetailsActivity;
 import kaitka.vishal.meeta.purple_ecommerce.Modellls.WishlistModel;
 import kaitka.vishal.meeta.purple_ecommerce.R;
 
 public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHolder> {
 
     private List<WishlistModel> wishlistModelList;
+    private Boolean wishlist;
 
-    public WishlistAdapter(List<WishlistModel> wishlistModelList) {
+    public WishlistAdapter(List<WishlistModel> wishlistModelList, Boolean wishlist) {
         this.wishlistModelList = wishlistModelList;
+        this.wishlist = wishlist;
     }
 
     @NonNull
@@ -105,11 +109,27 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
             cuttedPrice.setText(cuttedPriceValue);
             paymentMethod.setText(payMethod);
 
+            if (wishlist){
+                deleteBtn.setVisibility(View.VISIBLE);
+
+            }
+            else {
+                deleteBtn.setVisibility(View.GONE);
+            }
+
             deleteBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(itemView.getContext(), "removed from wishlist", Toast.LENGTH_SHORT).show();
 
+                }
+            });
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent productDetailsIntent = new Intent(itemView.getContext(), ProductDetailsActivity.class);
+                    itemView.getContext().startActivity(productDetailsIntent);
                 }
             });
         }
