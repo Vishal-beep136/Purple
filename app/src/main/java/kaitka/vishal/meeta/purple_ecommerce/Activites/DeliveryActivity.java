@@ -25,6 +25,7 @@ public class DeliveryActivity extends AppCompatActivity {
 
     ActivityDeliveryBinding binding;
     private Button changeOrAddNewAddress;
+    public static final int SELECT_ADDRESS = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +55,9 @@ public class DeliveryActivity extends AppCompatActivity {
         changeOrAddNewAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(DeliveryActivity.this, MyAddressesActivity.class));
+                Intent myAddressesIntent = new Intent(DeliveryActivity.this, MyAddressesActivity.class);
+                myAddressesIntent.putExtra("MODE", SELECT_ADDRESS);
+                startActivity(myAddressesIntent);
                 finish();
             }
         });
