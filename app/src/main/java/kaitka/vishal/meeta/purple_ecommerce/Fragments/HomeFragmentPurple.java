@@ -113,15 +113,15 @@ public class HomeFragmentPurple extends Fragment {
         /////HORIZONTAL PRODUCT LAYOUT STARTS HERE
 
         List<HorizontalProductScrollModel> horizontalProductScrollModelList = new ArrayList<>();
+        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.samsung, "Iphone 12 pro max", "512 GB Storage With 64 MP camera", "₹1,000,00"));
         horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.iphone_12, "Iphone 12 pro max", "512 GB Storage With 64 MP camera", "₹1,000,00"));
+        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.samsung, "Iphone 12 pro max", "512 GB Storage With 64 MP camera", "₹1,000,00"));
         horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.iphone_12, "Iphone 12 pro max", "512 GB Storage With 64 MP camera", "₹1,000,00"));
+        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.samsung, "Iphone 12 pro max", "512 GB Storage With 64 MP camera", "₹1,000,00"));
         horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.iphone_12, "Iphone 12 pro max", "512 GB Storage With 64 MP camera", "₹1,000,00"));
+        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.samsung, "Iphone 12 pro max", "512 GB Storage With 64 MP camera", "₹1,000,00"));
         horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.iphone_12, "Iphone 12 pro max", "512 GB Storage With 64 MP camera", "₹1,000,00"));
-        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.iphone_12, "Iphone 12 pro max", "512 GB Storage With 64 MP camera", "₹1,000,00"));
-        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.iphone_12, "Iphone 12 pro max", "512 GB Storage With 64 MP camera", "₹1,000,00"));
-        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.iphone_12, "Iphone 12 pro max", "512 GB Storage With 64 MP camera", "₹1,000,00"));
-        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.iphone_12, "Iphone 12 pro max", "512 GB Storage With 64 MP camera", "₹1,000,00"));
-        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.iphone_12, "Iphone 12 pro max", "512 GB Storage With 64 MP camera", "₹1,000,00"));
+        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.samsung, "Iphone 12 pro max", "512 GB Storage With 64 MP camera", "₹1,000,00"));
         /////HORIZONTAL PRODUCT LAYOUT ENDS HERE
 
         /////////////////////////////// Main Recycler View
@@ -140,7 +140,14 @@ public class HomeFragmentPurple extends Fragment {
         homePageModelList.add(new HomePageModel(3,"#Trending",horizontalProductScrollModelList));
         homePageModelList.add(new HomePageModel(2,"Smartphone",horizontalProductScrollModelList));
         homePageModelList.add(new HomePageModel(1,R.drawable.banner2, "#ffffff"));
-        homePageModelList.add(new HomePageModel(0,sliderModelList));
+        homePageModelList.add(new HomePageModel(1,R.drawable.banner2, "#fbe7cb"));
+        homePageModelList.add(new HomePageModel(2,"Deals of the day",horizontalProductScrollModelList));
+        homePageModelList.add(new HomePageModel(3,"best of the day",horizontalProductScrollModelList));
+        homePageModelList.add(new HomePageModel(1,R.drawable.banner1, "#cf3c3b"));
+        homePageModelList.add(new HomePageModel(3,"#Trending",horizontalProductScrollModelList));
+        homePageModelList.add(new HomePageModel(2,"Smartphone",horizontalProductScrollModelList));
+        homePageModelList.add(new HomePageModel(1,R.drawable.banner2, "#ffffff"));
+
 
         HomePageAdapter adapter = new HomePageAdapter(homePageModelList);
         testing.setAdapter(adapter);
