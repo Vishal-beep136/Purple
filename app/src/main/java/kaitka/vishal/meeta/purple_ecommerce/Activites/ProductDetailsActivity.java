@@ -25,6 +25,8 @@ import kaitka.vishal.meeta.purple_ecommerce.Adapters.ProductDetailsAdapter;
 import kaitka.vishal.meeta.purple_ecommerce.Adapters.ProductImagesAdapter;
 import kaitka.vishal.meeta.purple_ecommerce.R;
 
+import static kaitka.vishal.meeta.purple_ecommerce.Activites.MainActivity.showCart;
+
 public class ProductDetailsActivity extends AppCompatActivity {
 
     private ViewPager productImagesViewPager;
@@ -158,7 +160,9 @@ public class ProductDetailsActivity extends AppCompatActivity {
             return true;
         }
         else if (id == R.id.main_cart_icon_product_image){
-            //todo cart
+            Intent cartIntent = new Intent(ProductDetailsActivity.this,  MainActivity.class);
+            showCart = true;
+            startActivity(cartIntent);
             return true;
         }
 

@@ -92,20 +92,15 @@ public class HomeFragmentPurple extends Fragment {
 
         List<SliderModel> sliderModelList = new ArrayList<SliderModel>();
 
-        sliderModelList.add(new SliderModel(R.drawable.forget_pass,"#FF8DAB"));
-        sliderModelList.add(new SliderModel(R.drawable.purple_logo,"#FF8DAB"));
         sliderModelList.add(new SliderModel(R.drawable.banner1,"#FF8DAB"));
-
         sliderModelList.add(new SliderModel(R.drawable.banner2,"#FF8DAB"));
         sliderModelList.add(new SliderModel(R.drawable.ic_green_email,"#FF8DAB"));
         sliderModelList.add(new SliderModel(R.drawable.ic_baseline_home_24,"#FF8DAB"));
         sliderModelList.add(new SliderModel(R.drawable.ic_man,"#FF8DAB"));
         sliderModelList.add(new SliderModel(R.drawable.banner1,"#FF8DAB"));
         sliderModelList.add(new SliderModel(R.drawable.forget_pass,"#FF8DAB"));
-
         sliderModelList.add(new SliderModel(R.drawable.purple_logo,"#FF8DAB"));
-        sliderModelList.add(new SliderModel(R.drawable.banner1,"#FF8DAB"));
-        sliderModelList.add(new SliderModel(R.drawable.banner2,"#FF8DAB"));
+
         //  ///////////////Banner Slider ends here///////////////////
 
 

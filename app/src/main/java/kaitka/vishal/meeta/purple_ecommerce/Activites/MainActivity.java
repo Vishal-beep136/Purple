@@ -1,6 +1,7 @@
 package kaitka.vishal.meeta.purple_ecommerce.Activites;
 
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -41,14 +42,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final  int WISHLIST_FRAGMENT = 3;
     private static final  int REWARDS_FRAGMENT = 4;
     private static final  int ACCOUNT_FRAGMENT = 5;
+    public static Boolean showCart = false;
 
     private FrameLayout frameLayout;
-    private static int currentFragment = -1;
+    private int currentFragment = -1;
     private NavigationView navigationView;
     private ImageView actionBarLogo;
     private Window window;
     private Toolbar toolbar;
 
+    @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,17 +64,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(0).setChecked(true);
 
         frameLayout = findViewById(R.id.main_framelayout);
-        setFragment(new HomeFragmentPurple(), HOME_FRAGMENT);
+        if (showCart){
+            drawer.setDrawerLockMode(1);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            gotoFragment("My Cart", new MyCartFragment(), -2);
+            hideAppLogo();
+        }else {
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+            drawer.addDrawerListener(toggle);
+            toggle.syncState();
+            setFragment(new HomeFragmentPurple(), HOME_FRAGMENT);
+        }
     }
 
     @Override
@@ -85,10 +96,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 super.onBackPressed();
             }
             else {
-                actionBarLogo.setVisibility(View.VISIBLE);
-                invalidateOptionsMenu();
-                setFragment(new HomeFragmentPurple(), HOME_FRAGMENT);
-                navigationView.getMenu().getItem(0).setChecked(true);
+                if (showCart){
+                    showCart = false;
+                    finish();
+
+                }
+                else {
+                    actionBarLogo.setVisibility(View.VISIBLE);
+                    invalidateOptionsMenu();
+                    setFragment(new HomeFragmentPurple(), HOME_FRAGMENT);
+                    navigationView.getMenu().getItem(0).setChecked(true);
+                }
             }
         }
     }
@@ -120,6 +138,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         else if (id == R.id.main_cart_icon){
             hideAppLogo();
             gotoFragment("My Cart", new MyCartFragment(), CART_FRAGMENT);
+            return true;
+        }
+        else if (id == android.R.id.home){
+            showCart = false;
+            finish();
             return true;
         }
 
