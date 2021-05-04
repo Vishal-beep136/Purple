@@ -1,10 +1,14 @@
 package kaitka.vishal.meeta.purple_ecommerce.Adapters;
 
+import android.app.Dialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -63,7 +67,7 @@ public class CartAdapter extends RecyclerView.Adapter {
                 String cuttedPrice = cartItemModelList.get(position).getCuttedPrice();
                 int offersApplied = cartItemModelList.get(position).getOfferApplied();
 
-                ((CartItemViewholder)holder).setItemDetails(resource,title,freeCoupens,productPrice,cuttedPrice,offersApplied);
+                ((CartItemViewholder) holder).setItemDetails(resource, title, freeCoupens, productPrice, cuttedPrice, offersApplied);
                 break;
             case CartItemModel.TOTAL_AMOUNT:
                 String totalItems = cartItemModelList.get(position).getTotalItems();
@@ -72,7 +76,7 @@ public class CartAdapter extends RecyclerView.Adapter {
                 String totalAmount = cartItemModelList.get(position).getTotalAmount();
                 String savedAmount = cartItemModelList.get(position).getSavedAmount();
 
-                ((CartTotalAmountViewholder)holder).setTotalAmount(totalItems,totalItemPrice,deliveryPrice,totalAmount,savedAmount);
+                ((CartTotalAmountViewholder) holder).setTotalAmount(totalItems, totalItemPrice, deliveryPrice, totalAmount, savedAmount);
                 break;
             default:
         }
@@ -84,16 +88,16 @@ public class CartAdapter extends RecyclerView.Adapter {
     }
 
 
-     class CartItemViewholder extends RecyclerView.ViewHolder {
-        private  ImageView productImage;
-        private  ImageView freeCoupenIcon;
-        private  TextView productTitle;
-        private  TextView freeCoupens;
-        private  TextView productPrice;
-        private  TextView cuttedPrice;
-        private  TextView offersApplied;
-        private  TextView coupensApplied;
-        private  TextView productQuantity;
+    class CartItemViewholder extends RecyclerView.ViewHolder {
+        private ImageView productImage;
+        private ImageView freeCoupenIcon;
+        private TextView productTitle;
+        private TextView freeCoupens;
+        private TextView productPrice;
+        private TextView cuttedPrice;
+        private TextView offersApplied;
+        private TextView coupensApplied;
+        private TextView productQuantity;
 
 
         public CartItemViewholder(@NonNull View itemView) {
@@ -136,9 +140,39 @@ public class CartAdapter extends RecyclerView.Adapter {
                 offersApplied.setVisibility(View.INVISIBLE);
             }
 
+            productQuantity.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Dialog quantityDialog = new Dialog(itemView.getContext());
+                    quantityDialog.setContentView(R.layout.quantity_dialog);
+                    quantityDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    quantityDialog.setCancelable(false);
+                    EditText quantityNo = quantityDialog.findViewById(R.id.quantity_no);
+                    Button cancelBtn = quantityDialog.findViewById(R.id.cancel_btn);
+                    Button okBtn = quantityDialog.findViewById(R.id.ok_btn);
+
+                    cancelBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            quantityDialog.dismiss();
+                        }
+                    });
+
+                    okBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            productQuantity.setText("QTY: " + quantityNo.getText());
+                            quantityDialog.dismiss();
+                        }
+                    });
+
+                    quantityDialog.show();
+
+                }
+            });
+
         }
     }
-
 
 
     class CartTotalAmountViewholder extends RecyclerView.ViewHolder {

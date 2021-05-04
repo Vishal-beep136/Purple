@@ -9,6 +9,7 @@ import android.view.KeyEvent;
 import android.widget.FrameLayout;
 
 import kaitka.vishal.meeta.purple_ecommerce.Fragments.SignInFragment;
+import kaitka.vishal.meeta.purple_ecommerce.Fragments.SignUpFragment;
 import kaitka.vishal.meeta.purple_ecommerce.R;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -16,6 +17,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private FrameLayout frameLayout;
     public static boolean onResetPasswordFragment = false;
+    public static boolean setSignUpFragment = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,8 +25,12 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         getSupportActionBar().hide();
         frameLayout = findViewById(R.id.registerFramelayout);
-
-        setDefaultFragment(new SignInFragment());
+        if (setSignUpFragment){
+            setSignUpFragment = false;
+            setDefaultFragment(new SignUpFragment());
+        }else {
+            setDefaultFragment(new SignInFragment());
+        }
     }
 
     @Override
