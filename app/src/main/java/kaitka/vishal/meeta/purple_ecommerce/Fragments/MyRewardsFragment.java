@@ -53,7 +53,7 @@ public class MyRewardsFragment extends Fragment {
         rewardModelList.add(new RewardModel("Jai", "12.12.2021","free coupens in 2000 shoping"));
         rewardModelList.add(new RewardModel("Jai", "12.12.2021","free coupens in 2000 shoping"));
 
-        MyRewardsAdapter myRewardsAdapter = new MyRewardsAdapter(rewardModelList);
+        MyRewardsAdapter myRewardsAdapter = new MyRewardsAdapter(rewardModelList, false);
         rewardsRecyclerView.setAdapter(myRewardsAdapter);
         myRewardsAdapter.notifyDataSetChanged();
 

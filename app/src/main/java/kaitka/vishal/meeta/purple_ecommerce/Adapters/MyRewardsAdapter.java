@@ -10,21 +10,30 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import kaitka.vishal.meeta.purple_ecommerce.Activites.ProductDetailsActivity;
 import kaitka.vishal.meeta.purple_ecommerce.Modellls.RewardModel;
 import kaitka.vishal.meeta.purple_ecommerce.R;
 
 public class MyRewardsAdapter extends RecyclerView.Adapter<MyRewardsAdapter.Viewholder> {
 
     private List<RewardModel> rewardModelList;
+    private Boolean useMiniLayout = false;
 
-    public MyRewardsAdapter(List<RewardModel> rewardModelList) {
+    public MyRewardsAdapter(List<RewardModel> rewardModelList, Boolean useMiniLayout) {
         this.rewardModelList = rewardModelList;
+        this.useMiniLayout = useMiniLayout;
     }
 
     @NonNull
     @Override
     public Viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rewards_item_layout, parent, false);
+        View view;
+        if (useMiniLayout){
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.mini_rewards_item_layout, parent, false);
+        }
+        else {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rewards_item_layout, parent, false);
+        }
         return new Viewholder(view);
     }
 
@@ -55,6 +64,19 @@ public class MyRewardsAdapter extends RecyclerView.Adapter<MyRewardsAdapter.View
             coupenTitle.setText(title);
             coupenExpiryDate.setText(expDate);
             coupenBody.setText(coupenBodyText);
+
+            if (useMiniLayout){
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ProductDetailsActivity.coupenTitle.setText(title);
+                        ProductDetailsActivity.coupenExpiryDate.setText(expDate);
+                        ProductDetailsActivity.coupenBody.setText(coupenBodyText);
+
+                        ProductDetailsActivity.showDialogRecyclerView();
+                    }
+                });
+            }
 
         }
     }
