@@ -9,6 +9,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+
 import java.util.List;
 
 import kaitka.vishal.meeta.purple_ecommerce.Modellls.HorizontalProductScrollModel;
@@ -59,7 +62,9 @@ public class GridProductLayoutAdapter extends BaseAdapter {
             TextView productDescription = view.findViewById(R.id.h_s_product_description);
             TextView productPrice = view.findViewById(R.id.h_s_product_price);
 
-           // productImage.setImageResource(horizontalProductScrollModelList.get(position).getProductImage());
+            //todo: remove view to parent
+            Glide.with(view.getContext()).load(horizontalProductScrollModelList.get(position).getProductImage())
+            .apply(new RequestOptions().placeholder(R.drawable.ic_shopping_cart)).into(productImage);
             productTitle.setText(horizontalProductScrollModelList.get(position).getProductTitle());
             productDescription.setText(horizontalProductScrollModelList.get(position).getProductDescription());
             productPrice.setText(horizontalProductScrollModelList.get(position).getProductPrice());

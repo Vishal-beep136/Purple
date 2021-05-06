@@ -3,8 +3,11 @@ package kaitka.vishal.meeta.purple_ecommerce.Activites;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -17,6 +20,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
@@ -43,14 +47,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private AppBarConfiguration mAppBarConfiguration;
     private static final int HOME_FRAGMENT = 0;
-    private static final  int CART_FRAGMENT = 1;
+    private static final int CART_FRAGMENT = 1;
     private static final int ORDERS_FRAGMENT = 2;
-    private static final  int WISHLIST_FRAGMENT = 3;
-    private static final  int REWARDS_FRAGMENT = 4;
-    private static final  int ACCOUNT_FRAGMENT = 5;
+    private static final int WISHLIST_FRAGMENT = 3;
+    private static final int REWARDS_FRAGMENT = 4;
+    private static final int ACCOUNT_FRAGMENT = 5;
     public static Boolean showCart = false;
 
     private FrameLayout frameLayout;
+    private ImageView noInternetConnection;
     private int currentFragment = -1;
     private NavigationView navigationView;
     private ImageView actionBarLogo;
@@ -77,17 +82,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.getMenu().getItem(0).setChecked(true);
 
         frameLayout = findViewById(R.id.main_framelayout);
-        if (showCart){
-            drawer.setDrawerLockMode(1);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            gotoFragment("My Cart", new MyCartFragment(), -2);
+        noInternetConnection = findViewById(R.id.no_internet_connection);
+
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected() == true) {
+            noInternetConnection.setVisibility(View.GONE);
+            if (showCart) {
+                drawer.setDrawerLockMode(1);
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                gotoFragment("My Cart", new MyCartFragment(), -2);
+                hideAppLogo();
+            } else {
+                ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                        this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                drawer.addDrawerListener(toggle);
+                toggle.syncState();
+                setFragment(new HomeFragmentPurple(), HOME_FRAGMENT);
+            }
+
+        }
+        else {
+            getSupportActionBar().setTitle("Internet Issue");
             hideAppLogo();
-        }else {
-            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-            drawer.addDrawerListener(toggle);
-            toggle.syncState();
-            setFragment(new HomeFragmentPurple(), HOME_FRAGMENT);
+            Glide.with(this).load(R.drawable.no_internet_connection).into(noInternetConnection);
+            noInternetConnection.setVisibility(View.VISIBLE);
         }
     }
 
@@ -97,17 +116,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            if (currentFragment == HOME_FRAGMENT){
+            if (currentFragment == HOME_FRAGMENT) {
                 currentFragment = -1;
                 super.onBackPressed();
-            }
-            else {
-                if (showCart){
+            } else {
+                if (showCart) {
                     showCart = false;
                     finish();
 
-                }
-                else {
+                } else {
                     actionBarLogo.setVisibility(View.VISIBLE);
                     invalidateOptionsMenu();
                     setFragment(new HomeFragmentPurple(), HOME_FRAGMENT);
@@ -131,23 +148,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.main_search_icon){
+        if (id == R.id.main_search_icon) {
             //todo search
             return true;
 
-        }
-        else if (id == R.id.main_notification){
+        } else if (id == R.id.main_notification) {
             //todo notification system
             return true;
 
-        }
-        else if (id == R.id.main_cart_icon){
-            final Dialog  signInDialog = new Dialog(MainActivity.this);
+        } else if (id == R.id.main_cart_icon) {
+            final Dialog signInDialog = new Dialog(MainActivity.this);
             signInDialog.setContentView(R.layout.sign_in_dialog);
             signInDialog.setCancelable(true);
             signInDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             Button dialogSignInBtn = signInDialog.findViewById(R.id.sign_in_btn);
-            Button  dialogSignUpBtn = signInDialog.findViewById(R.id.sign_up_btn);
+            Button dialogSignUpBtn = signInDialog.findViewById(R.id.sign_up_btn);
             Intent registerIntent = new Intent(MainActivity.this, RegisterActivity.class);
 
             dialogSignInBtn.setOnClickListener(new View.OnClickListener() {
@@ -173,8 +188,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 //            gotoFragment("My Cart", new MyCartFragment(), CART_FRAGMENT);
             return true;
-        }
-        else if (id == android.R.id.home){
+        } else if (id == android.R.id.home) {
             showCart = false;
             finish();
             return true;
@@ -189,7 +203,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getSupportActionBar().setTitle(title);
         invalidateOptionsMenu();
         setFragment(fragment, fragmentNo);
-        if (fragmentNo == CART_FRAGMENT){
+        if (fragmentNo == CART_FRAGMENT) {
             navigationView.getMenu().getItem(3).setChecked(true);
         }
 
@@ -200,36 +214,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.nav_my_mall){
+        if (id == R.id.nav_my_mall) {
 
             actionBarLogo.setVisibility(View.VISIBLE);
             invalidateOptionsMenu();
             setFragment(new HomeFragmentPurple(), HOME_FRAGMENT);
-        }
-        else if (id == R.id.nav_my_orders){
+        } else if (id == R.id.nav_my_orders) {
             hideAppLogo();
             gotoFragment("My Orders", new MyOrdersFragment(), ORDERS_FRAGMENT);
-        }
-        else if (id == R.id.nav_my_rewards){
+        } else if (id == R.id.nav_my_rewards) {
             hideAppLogo();
-            gotoFragment("My Rewards", new MyRewardsFragment(),REWARDS_FRAGMENT);
+            gotoFragment("My Rewards", new MyRewardsFragment(), REWARDS_FRAGMENT);
 
-        }
-        else if (id == R.id.nav_my_cart){
+        } else if (id == R.id.nav_my_cart) {
             hideAppLogo();
             gotoFragment("My Cart", new MyCartFragment(), CART_FRAGMENT);
 
-        }
-        else if (id == R.id.nav_my_wishlist){
+        } else if (id == R.id.nav_my_wishlist) {
             hideAppLogo();
-            gotoFragment("My Wishlist", new MyWishlistFragment(),WISHLIST_FRAGMENT);
+            gotoFragment("My Wishlist", new MyWishlistFragment(), WISHLIST_FRAGMENT);
 
-        }
-        else if (id == R.id.nav_my_account){
+        } else if (id == R.id.nav_my_account) {
             hideAppLogo();
             gotoFragment("My Account", new MyAccountFragment(), ACCOUNT_FRAGMENT);
 
-        }else if (id == R.id.log_out){
+        } else if (id == R.id.log_out) {
 
         }
 
@@ -243,13 +252,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         actionBarLogo.setVisibility(View.GONE);
     }
 
-    private void setFragment(Fragment fragment, int fragmentNo){
-        if (fragmentNo != currentFragment){
-            if (fragmentNo == REWARDS_FRAGMENT){
+    private void setFragment(Fragment fragment, int fragmentNo) {
+        if (fragmentNo != currentFragment) {
+            if (fragmentNo == REWARDS_FRAGMENT) {
                 window.setStatusBarColor(Color.parseColor("#5B04B1"));
                 toolbar.setBackgroundColor(Color.parseColor("#5B04B1"));
-            }
-            else {
+            } else {
                 window.setStatusBarColor(getResources().getColor(R.color.colorPrimary));
                 toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimaryVariant));
             }
@@ -260,7 +268,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fragmentTransaction.replace(frameLayout.getId(), fragment);
             fragmentTransaction.commit();
         }
-        
+
 
     }
 }
