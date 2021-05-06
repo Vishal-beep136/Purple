@@ -56,7 +56,8 @@ public class HomeFragmentPurple extends Fragment {
 
     private RecyclerView categoryRecyclerView;
     private CategoryAdapter categoryAdapter;
-    private RecyclerView testing;
+    private RecyclerView homePageRecyclerView;
+    private HomePageAdapter adapter;
     private List<CategoryModel> categoryModelList;
     private FirebaseFirestore firebaseFirestore;
 
@@ -103,24 +104,8 @@ public class HomeFragmentPurple extends Fragment {
                     }
                 });
 
-        //  ///////////////Banner Slider starts here///////////////////
-
-        List<SliderModel> sliderModelList = new ArrayList<SliderModel>();
-
-        sliderModelList.add(new SliderModel(R.drawable.banner1, "#FF8DAB"));
-        sliderModelList.add(new SliderModel(R.drawable.banner2, "#FF8DAB"));
-        sliderModelList.add(new SliderModel(R.drawable.ic_green_email, "#FF8DAB"));
-        sliderModelList.add(new SliderModel(R.drawable.ic_baseline_home_24, "#FF8DAB"));
-        sliderModelList.add(new SliderModel(R.drawable.ic_man, "#FF8DAB"));
-        sliderModelList.add(new SliderModel(R.drawable.banner1, "#FF8DAB"));
-        sliderModelList.add(new SliderModel(R.drawable.forget_pass, "#FF8DAB"));
-        sliderModelList.add(new SliderModel(R.drawable.purple_logo, "#FF8DAB"));
-
-        //  ///////////////Banner Slider ends here///////////////////
-
-
         /////HORIZONTAL PRODUCT LAYOUT STARTS HERE
-
+/*
         List<HorizontalProductScrollModel> horizontalProductScrollModelList = new ArrayList<>();
         horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.samsung, "Iphone 12 pro max", "512 GB Storage With 64 MP camera", "₹1,000,00"));
         horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.iphone_12, "Iphone 12 pro max", "512 GB Storage With 64 MP camera", "₹1,000,00"));
@@ -131,36 +116,70 @@ public class HomeFragmentPurple extends Fragment {
         horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.samsung, "Iphone 12 pro max", "512 GB Storage With 64 MP camera", "₹1,000,00"));
         horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.iphone_12, "Iphone 12 pro max", "512 GB Storage With 64 MP camera", "₹1,000,00"));
         horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.samsung, "Iphone 12 pro max", "512 GB Storage With 64 MP camera", "₹1,000,00"));
+
+ */
         /////HORIZONTAL PRODUCT LAYOUT ENDS HERE
 
-        /////////////////////////////// Main Recycler View
-
-        testing = view.findViewById(R.id.home_page_recyclerview);
+        homePageRecyclerView = view.findViewById(R.id.home_page_recyclerview);
         LinearLayoutManager testingLayoutManager = new LinearLayoutManager(getContext());
         testingLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        testing.setLayoutManager(testingLayoutManager);
-
+        homePageRecyclerView.setLayoutManager(testingLayoutManager);
         List<HomePageModel> homePageModelList = new ArrayList<>();
-        homePageModelList.add(new HomePageModel(0, sliderModelList));
-        homePageModelList.add(new HomePageModel(1, R.drawable.banner2, "#fbe7cb"));
-        homePageModelList.add(new HomePageModel(2, "Deals of the day", horizontalProductScrollModelList));
-        homePageModelList.add(new HomePageModel(3, "best of the day", horizontalProductScrollModelList));
-        homePageModelList.add(new HomePageModel(1, R.drawable.banner1, "#cf3c3b"));
-        homePageModelList.add(new HomePageModel(3, "#Trending", horizontalProductScrollModelList));
-        homePageModelList.add(new HomePageModel(2, "Smartphone", horizontalProductScrollModelList));
-        homePageModelList.add(new HomePageModel(1, R.drawable.banner2, "#ffffff"));
-        homePageModelList.add(new HomePageModel(1, R.drawable.banner2, "#fbe7cb"));
-        homePageModelList.add(new HomePageModel(2, "Deals of the day", horizontalProductScrollModelList));
-        homePageModelList.add(new HomePageModel(3, "best of the day", horizontalProductScrollModelList));
-        homePageModelList.add(new HomePageModel(1, R.drawable.banner1, "#cf3c3b"));
-        homePageModelList.add(new HomePageModel(3, "#Trending", horizontalProductScrollModelList));
-        homePageModelList.add(new HomePageModel(2, "Smartphone", horizontalProductScrollModelList));
-        homePageModelList.add(new HomePageModel(1, R.drawable.banner2, "#ffffff"));
+        adapter = new HomePageAdapter(homePageModelList);
+        homePageRecyclerView.setAdapter(adapter);
+
+        firebaseFirestore
+                .collection("CATEGORIES")
+                .document("HOME")
+                .collection("TOP_DEALS")
+                .orderBy("index")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                                if ((long) documentSnapshot.get("view_type") == 0){
+                                    List<SliderModel> sliderModelList = new ArrayList<>();
+                                    long no_of_banners = (long)documentSnapshot.get("no_of_banners");
+                                    for (long x = 1; x < no_of_banners + 1; x++){
+                                        String banners = documentSnapshot.get("banner_"+x).toString();
+                                        String banner_background = documentSnapshot.get("banner_"+x+"_bg").toString();
+                                        sliderModelList.add(new SliderModel(banners, banner_background));
+                                    }
+
+                                    homePageModelList.add(new HomePageModel(0,sliderModelList));
+
+                                }
+                                else if ((long) documentSnapshot.get("view_type") == 1){
+
+                                    String stripAdBanner = documentSnapshot.get("strip_ad_banner").toString();
+                                    String stripAdBackground = documentSnapshot.get("background").toString();
+                                    homePageModelList.add(new HomePageModel(1, stripAdBanner, stripAdBackground));
 
 
-        HomePageAdapter adapter = new HomePageAdapter(homePageModelList);
-        testing.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+                                }
+                                else if ((long) documentSnapshot.get("view_type") == 2){
+
+                                }
+                                else if ((long) documentSnapshot.get("view_type") == 3){
+
+                                }
+
+                            }
+                            adapter.notifyDataSetChanged();
+
+
+                        } else {
+                            String error = task.getException().getMessage();
+                            Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+                });
+
+
+
 
 
         ///////////////////////////// Main Recycler view ends here

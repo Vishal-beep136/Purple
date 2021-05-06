@@ -33,17 +33,17 @@ public class HomePageModel {
     //  Banner Slider ends here///////////////////////
 
     //////////Strip Ad Layout START here
-    private int resourse;
+    private String resourse;
     private String backgroundColor;
-    public HomePageModel(int type, int resourse, String backgroundColor) {
+    public HomePageModel(int type, String resourse, String backgroundColor) {
         this.type = type;
         this.resourse = resourse;
         this.backgroundColor = backgroundColor;
     }
-    public int getResourse() {
+    public String getResourse() {
         return resourse;
     }
-    public void setResourse(int resourse) {
+    public void setResourse(String resourse) {
         this.resourse = resourse;
     }
     public String getBackgroundColor() {

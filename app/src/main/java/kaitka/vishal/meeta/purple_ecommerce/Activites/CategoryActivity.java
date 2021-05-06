@@ -37,41 +37,8 @@ public class CategoryActivity extends AppCompatActivity {
 
         categoryRecyclerView = findViewById(R.id.category_recyclerview);
 
-        //  ///////////////Banner Slider starts here///////////////////
-
-        List<SliderModel> sliderModelList = new ArrayList<SliderModel>();
-
-        sliderModelList.add(new SliderModel(R.drawable.forget_pass,"#FF8DAB"));
-        sliderModelList.add(new SliderModel(R.drawable.purple_logo,"#FF8DAB"));
-        sliderModelList.add(new SliderModel(R.drawable.banner1,"#FF8DAB"));
-
-        sliderModelList.add(new SliderModel(R.drawable.banner2,"#FF8DAB"));
-        sliderModelList.add(new SliderModel(R.drawable.ic_green_email,"#FF8DAB"));
-        sliderModelList.add(new SliderModel(R.drawable.ic_baseline_home_24,"#FF8DAB"));
-        sliderModelList.add(new SliderModel(R.drawable.ic_man,"#FF8DAB"));
-        sliderModelList.add(new SliderModel(R.drawable.banner1,"#FF8DAB"));
-        sliderModelList.add(new SliderModel(R.drawable.forget_pass,"#FF8DAB"));
-
-        sliderModelList.add(new SliderModel(R.drawable.purple_logo,"#FF8DAB"));
-        sliderModelList.add(new SliderModel(R.drawable.banner1,"#FF8DAB"));
-        sliderModelList.add(new SliderModel(R.drawable.banner2,"#FF8DAB"));
-        //  ///////////////Banner Slider ends here///////////////////
 
 
-
-        /////HORIZONTAL PRODUCT LAYOUT STARTS HERE
-
-        List<HorizontalProductScrollModel> horizontalProductScrollModelList = new ArrayList<>();
-        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.iphone_12, "Iphone 12 pro max", "512 GB Storage With 64 MP camera", "₹1,000,00"));
-        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.iphone_12, "Iphone 12 pro max", "512 GB Storage With 64 MP camera", "₹1,000,00"));
-        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.iphone_12, "Iphone 12 pro max", "512 GB Storage With 64 MP camera", "₹1,000,00"));
-        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.iphone_12, "Iphone 12 pro max", "512 GB Storage With 64 MP camera", "₹1,000,00"));
-        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.iphone_12, "Iphone 12 pro max", "512 GB Storage With 64 MP camera", "₹1,000,00"));
-        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.iphone_12, "Iphone 12 pro max", "512 GB Storage With 64 MP camera", "₹1,000,00"));
-        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.iphone_12, "Iphone 12 pro max", "512 GB Storage With 64 MP camera", "₹1,000,00"));
-        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.iphone_12, "Iphone 12 pro max", "512 GB Storage With 64 MP camera", "₹1,000,00"));
-        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.iphone_12, "Iphone 12 pro max", "512 GB Storage With 64 MP camera", "₹1,000,00"));
-        /////HORIZONTAL PRODUCT LAYOUT ENDS HERE
 
         /////////////////////////////// Main Recycler View
 
@@ -81,16 +48,6 @@ public class CategoryActivity extends AppCompatActivity {
         categoryRecyclerView.setLayoutManager(testingLayoutManager);
 
         List<HomePageModel> homePageModelList = new ArrayList<>();
-        homePageModelList.add(new HomePageModel(0,sliderModelList));
-        homePageModelList.add(new HomePageModel(1,R.drawable.banner2, "#fbe7cb"));
-        homePageModelList.add(new HomePageModel(2,"Deals of the day",horizontalProductScrollModelList));
-        homePageModelList.add(new HomePageModel(3,"best of the day",horizontalProductScrollModelList));
-        homePageModelList.add(new HomePageModel(1,R.drawable.banner1, "#cf3c3b"));
-        homePageModelList.add(new HomePageModel(3,"#Trending",horizontalProductScrollModelList));
-        homePageModelList.add(new HomePageModel(2,"Smartphone",horizontalProductScrollModelList));
-        homePageModelList.add(new HomePageModel(1,R.drawable.banner2, "#ffffff"));
-
-
         HomePageAdapter adapter = new HomePageAdapter(homePageModelList);
         categoryRecyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
