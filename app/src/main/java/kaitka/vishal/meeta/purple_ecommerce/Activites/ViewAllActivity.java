@@ -22,13 +22,15 @@ import kaitka.vishal.meeta.purple_ecommerce.databinding.ActivityViewAllBinding;
 public class ViewAllActivity extends AppCompatActivity {
 
     ActivityViewAllBinding binding;
+    public static List<HorizontalProductScrollModel> horizontalProductScrollModelList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityViewAllBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        getSupportActionBar().setTitle("Deals of the day");
+        getSupportActionBar().setTitle(getIntent().getStringExtra("title"));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         int layout_code = getIntent().getIntExtra("layout_code", -1);
@@ -73,7 +75,6 @@ public class ViewAllActivity extends AppCompatActivity {
         } else if (layout_code == 1) {
             //second condition starts here
             binding.gridViewAllActivity.setVisibility(View.VISIBLE);
-            List<HorizontalProductScrollModel> horizontalProductScrollModelList = new ArrayList<>();
             GridProductLayoutAdapter gridProductLayoutAdapter = new GridProductLayoutAdapter(horizontalProductScrollModelList);
             binding.gridViewAllActivity.setAdapter(gridProductLayoutAdapter);
 

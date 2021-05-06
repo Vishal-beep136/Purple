@@ -67,7 +67,7 @@ public class GridProductLayoutAdapter extends BaseAdapter {
             .apply(new RequestOptions().placeholder(R.drawable.ic_shopping_cart)).into(productImage);
             productTitle.setText(horizontalProductScrollModelList.get(position).getProductTitle());
             productDescription.setText(horizontalProductScrollModelList.get(position).getProductDescription());
-            productPrice.setText(horizontalProductScrollModelList.get(position).getProductPrice());
+            productPrice.setText("₹ "+horizontalProductScrollModelList.get(position).getProductPrice()+".00/-");
         }
         else {
             view = convertView;

@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static Boolean showCart = false;
 
     private FrameLayout frameLayout;
-    private ImageView noInternetConnection;
     private int currentFragment = -1;
     private NavigationView navigationView;
     private ImageView actionBarLogo;
@@ -82,32 +81,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.getMenu().getItem(0).setChecked(true);
 
         frameLayout = findViewById(R.id.main_framelayout);
-        noInternetConnection = findViewById(R.id.no_internet_connection);
 
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected() == true) {
-            noInternetConnection.setVisibility(View.GONE);
-            if (showCart) {
-                drawer.setDrawerLockMode(1);
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-                gotoFragment("My Cart", new MyCartFragment(), -2);
-                hideAppLogo();
-            } else {
-                ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                        this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-                drawer.addDrawerListener(toggle);
-                toggle.syncState();
-                setFragment(new HomeFragmentPurple(), HOME_FRAGMENT);
-            }
-
-        }
-        else {
-            getSupportActionBar().setTitle("Internet Issue");
+        if (showCart) {
+            drawer.setDrawerLockMode(1);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            gotoFragment("My Cart", new MyCartFragment(), -2);
             hideAppLogo();
-            Glide.with(this).load(R.drawable.no_internet_connection).into(noInternetConnection);
-            noInternetConnection.setVisibility(View.VISIBLE);
+        } else {
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+            drawer.addDrawerListener(toggle);
+            toggle.syncState();
+            setFragment(new HomeFragmentPurple(), HOME_FRAGMENT);
         }
+
+
     }
 
     @Override
