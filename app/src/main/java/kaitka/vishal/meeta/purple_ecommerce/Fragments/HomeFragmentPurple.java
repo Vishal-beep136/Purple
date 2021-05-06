@@ -3,6 +3,7 @@ package kaitka.vishal.meeta.purple_ecommerce.Fragments;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,6 +19,13 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +50,6 @@ import kaitka.vishal.meeta.purple_ecommerce.ui.slideshow.SlideshowViewModel;
 public class HomeFragmentPurple extends Fragment {
 
 
-
     public HomeFragmentPurple() {
         // Required empty public constructor
     }
@@ -50,6 +57,8 @@ public class HomeFragmentPurple extends Fragment {
     private RecyclerView categoryRecyclerView;
     private CategoryAdapter categoryAdapter;
     private RecyclerView testing;
+    private List<CategoryModel> categoryModelList;
+    private FirebaseFirestore firebaseFirestore;
 
 
     @Override
@@ -68,41 +77,46 @@ public class HomeFragmentPurple extends Fragment {
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         categoryRecyclerView.setLayoutManager(layoutManager);
 
-        List<CategoryModel> categoryModelList = new ArrayList<>();
-        categoryModelList.add(new CategoryModel("line", "Home"));
-        categoryModelList.add(new CategoryModel("line", "Electronics"));
-        categoryModelList.add(new CategoryModel("line", "Furniture"));
-        categoryModelList.add(new CategoryModel("line", "Tech"));
-        categoryModelList.add(new CategoryModel("line", "Fashion"));
-        categoryModelList.add(new CategoryModel("line", "Kids"));
-        categoryModelList.add(new CategoryModel("line", "Men"));
-        categoryModelList.add(new CategoryModel("line", "Woman"));
-        categoryModelList.add(new CategoryModel("line", "Toys"));
-        categoryModelList.add(new CategoryModel("line", "sports"));
-        categoryModelList.add(new CategoryModel("line", "kitchen"));
-        categoryModelList.add(new CategoryModel("line", "shoes"));
-        categoryModelList.add(new CategoryModel("line", "books"));
-
+        categoryModelList = new ArrayList<>();
         categoryAdapter = new CategoryAdapter(categoryModelList);
 
         categoryRecyclerView.setAdapter(categoryAdapter);
-        categoryAdapter.notifyDataSetChanged();
+
+
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        firebaseFirestore.collection("CATEGORIES").orderBy("index").get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                                categoryModelList.add(new CategoryModel(documentSnapshot.get("icon")
+                                        .toString(), documentSnapshot.get("categoryName").toString()));
+                            }
+                            categoryAdapter.notifyDataSetChanged();
+
+                        } else {
+                            String error = task.getException().getMessage();
+                            Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+                });
 
         //  ///////////////Banner Slider starts here///////////////////
 
         List<SliderModel> sliderModelList = new ArrayList<SliderModel>();
 
-        sliderModelList.add(new SliderModel(R.drawable.banner1,"#FF8DAB"));
-        sliderModelList.add(new SliderModel(R.drawable.banner2,"#FF8DAB"));
-        sliderModelList.add(new SliderModel(R.drawable.ic_green_email,"#FF8DAB"));
-        sliderModelList.add(new SliderModel(R.drawable.ic_baseline_home_24,"#FF8DAB"));
-        sliderModelList.add(new SliderModel(R.drawable.ic_man,"#FF8DAB"));
-        sliderModelList.add(new SliderModel(R.drawable.banner1,"#FF8DAB"));
-        sliderModelList.add(new SliderModel(R.drawable.forget_pass,"#FF8DAB"));
-        sliderModelList.add(new SliderModel(R.drawable.purple_logo,"#FF8DAB"));
+        sliderModelList.add(new SliderModel(R.drawable.banner1, "#FF8DAB"));
+        sliderModelList.add(new SliderModel(R.drawable.banner2, "#FF8DAB"));
+        sliderModelList.add(new SliderModel(R.drawable.ic_green_email, "#FF8DAB"));
+        sliderModelList.add(new SliderModel(R.drawable.ic_baseline_home_24, "#FF8DAB"));
+        sliderModelList.add(new SliderModel(R.drawable.ic_man, "#FF8DAB"));
+        sliderModelList.add(new SliderModel(R.drawable.banner1, "#FF8DAB"));
+        sliderModelList.add(new SliderModel(R.drawable.forget_pass, "#FF8DAB"));
+        sliderModelList.add(new SliderModel(R.drawable.purple_logo, "#FF8DAB"));
 
         //  ///////////////Banner Slider ends here///////////////////
-
 
 
         /////HORIZONTAL PRODUCT LAYOUT STARTS HERE
@@ -127,21 +141,21 @@ public class HomeFragmentPurple extends Fragment {
         testing.setLayoutManager(testingLayoutManager);
 
         List<HomePageModel> homePageModelList = new ArrayList<>();
-        homePageModelList.add(new HomePageModel(0,sliderModelList));
-        homePageModelList.add(new HomePageModel(1,R.drawable.banner2, "#fbe7cb"));
-        homePageModelList.add(new HomePageModel(2,"Deals of the day",horizontalProductScrollModelList));
-        homePageModelList.add(new HomePageModel(3,"best of the day",horizontalProductScrollModelList));
-        homePageModelList.add(new HomePageModel(1,R.drawable.banner1, "#cf3c3b"));
-        homePageModelList.add(new HomePageModel(3,"#Trending",horizontalProductScrollModelList));
-        homePageModelList.add(new HomePageModel(2,"Smartphone",horizontalProductScrollModelList));
-        homePageModelList.add(new HomePageModel(1,R.drawable.banner2, "#ffffff"));
-        homePageModelList.add(new HomePageModel(1,R.drawable.banner2, "#fbe7cb"));
-        homePageModelList.add(new HomePageModel(2,"Deals of the day",horizontalProductScrollModelList));
-        homePageModelList.add(new HomePageModel(3,"best of the day",horizontalProductScrollModelList));
-        homePageModelList.add(new HomePageModel(1,R.drawable.banner1, "#cf3c3b"));
-        homePageModelList.add(new HomePageModel(3,"#Trending",horizontalProductScrollModelList));
-        homePageModelList.add(new HomePageModel(2,"Smartphone",horizontalProductScrollModelList));
-        homePageModelList.add(new HomePageModel(1,R.drawable.banner2, "#ffffff"));
+        homePageModelList.add(new HomePageModel(0, sliderModelList));
+        homePageModelList.add(new HomePageModel(1, R.drawable.banner2, "#fbe7cb"));
+        homePageModelList.add(new HomePageModel(2, "Deals of the day", horizontalProductScrollModelList));
+        homePageModelList.add(new HomePageModel(3, "best of the day", horizontalProductScrollModelList));
+        homePageModelList.add(new HomePageModel(1, R.drawable.banner1, "#cf3c3b"));
+        homePageModelList.add(new HomePageModel(3, "#Trending", horizontalProductScrollModelList));
+        homePageModelList.add(new HomePageModel(2, "Smartphone", horizontalProductScrollModelList));
+        homePageModelList.add(new HomePageModel(1, R.drawable.banner2, "#ffffff"));
+        homePageModelList.add(new HomePageModel(1, R.drawable.banner2, "#fbe7cb"));
+        homePageModelList.add(new HomePageModel(2, "Deals of the day", horizontalProductScrollModelList));
+        homePageModelList.add(new HomePageModel(3, "best of the day", horizontalProductScrollModelList));
+        homePageModelList.add(new HomePageModel(1, R.drawable.banner1, "#cf3c3b"));
+        homePageModelList.add(new HomePageModel(3, "#Trending", horizontalProductScrollModelList));
+        homePageModelList.add(new HomePageModel(2, "Smartphone", horizontalProductScrollModelList));
+        homePageModelList.add(new HomePageModel(1, R.drawable.banner2, "#ffffff"));
 
 
         HomePageAdapter adapter = new HomePageAdapter(homePageModelList);
