@@ -11,6 +11,8 @@ public class HomePageModel {
 
 
     private int type;
+    private String backgroundColor;
+
 
     //  Banner Slider ///////////////////////
     private List<SliderModel> sliderModelList;
@@ -34,7 +36,6 @@ public class HomePageModel {
 
     //////////Strip Ad Layout START here
     private String resourse;
-    private String backgroundColor;
     public HomePageModel(int type, String resourse, String backgroundColor) {
         this.type = type;
         this.resourse = resourse;
@@ -58,9 +59,10 @@ public class HomePageModel {
     private String title;
     private List<HorizontalProductScrollModel> horizontalProductScrollModelList;
 
-    public HomePageModel(int type, String title, List<HorizontalProductScrollModel> horizontalProductScrollModelList) {
+    public HomePageModel(int type, String title, String backgroundColor, List<HorizontalProductScrollModel> horizontalProductScrollModelList) {
         this.type = type;
         this.title = title;
+        this.backgroundColor = backgroundColor;
         this.horizontalProductScrollModelList = horizontalProductScrollModelList;
     }
     public String getTitle() {

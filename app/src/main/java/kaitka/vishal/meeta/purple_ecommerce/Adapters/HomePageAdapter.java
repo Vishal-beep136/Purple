@@ -1,6 +1,7 @@
 package kaitka.vishal.meeta.purple_ecommerce.Adapters;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -105,10 +106,12 @@ public class HomePageAdapter extends RecyclerView.Adapter {
                 break;
 
             case HomePageModel.HORIZONTAL_PRODUCT_VIEW:
+                String layoutColor = homePageModelList.get(position).getBackgroundColor();
                 String horizontalLayoutTitle = homePageModelList.get(position).getTitle();
                 List<HorizontalProductScrollModel> horizontalProductScrollModelList = homePageModelList.get(position)
                         .getHorizontalProductScrollModelList();
-                ((HorizontalProductViewholder) holder).setHorizontalProductLayout(horizontalProductScrollModelList, horizontalLayoutTitle);
+                ((HorizontalProductViewholder) holder).setHorizontalProductLayout(horizontalProductScrollModelList, horizontalLayoutTitle, layoutColor);
+
                 break;
 
             case HomePageModel.GRID_PRODUCT_VIEW:
@@ -262,20 +265,22 @@ public class HomePageAdapter extends RecyclerView.Adapter {
     }
 
     public class HorizontalProductViewholder extends RecyclerView.ViewHolder {
+        private ConstraintLayout containerHorizontal;
         private TextView horizontalLayoutTitle;
         private Button horizontalLayoutViewAllBtn;
         private RecyclerView horizontalRecyclerView;
 
         public HorizontalProductViewholder(@NonNull View itemView) {
             super(itemView);
+            containerHorizontal = itemView.findViewById(R.id.containerHorizontalScroll);
             horizontalLayoutTitle = itemView.findViewById(R.id.horizontal__scroll_layout_title);
             horizontalLayoutViewAllBtn = itemView.findViewById(R.id.horizontal_scroll_view_all_btn);
             horizontalRecyclerView = itemView.findViewById(R.id.horizontal_scroll_layout_recyclerview);
             horizontalRecyclerView.setRecycledViewPool(recycledViewPool);
         }
-        private void setHorizontalProductLayout(List<HorizontalProductScrollModel> horizontalProductScrollModelList, String title){
+        private void setHorizontalProductLayout(List<HorizontalProductScrollModel> horizontalProductScrollModelList, String title, String color){
+            containerHorizontal.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(color)));
             horizontalLayoutTitle.setText(title);
-
             if (horizontalProductScrollModelList.size() > 8){
                 horizontalLayoutViewAllBtn.setVisibility(View.VISIBLE);
                 horizontalLayoutViewAllBtn.setOnClickListener(new View.OnClickListener() {
@@ -326,7 +331,7 @@ public class HomePageAdapter extends RecyclerView.Adapter {
                 TextView productDescription = gridProductLayout.getChildAt(x).findViewById(R.id.h_s_product_description);
                 TextView productPrice = gridProductLayout.getChildAt(x).findViewById(R.id.h_s_product_price);
 
-                productImage.setImageResource(horizontalProductScrollModelList.get(x).getProductImage());
+//                Glide.with(itemView.getContext()).load()
                 productTitle.setText(horizontalProductScrollModelList.get(x).getProductTitle());
                 productDescription.setText(horizontalProductScrollModelList.get(x).getProductDescription());
                 productPrice.setText(horizontalProductScrollModelList.get(x).getProductPrice());

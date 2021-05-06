@@ -1,24 +1,17 @@
 package kaitka.vishal.meeta.purple_ecommerce.Fragments;
 
-import android.graphics.Color;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
+
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
 
-import android.os.Handler;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -29,8 +22,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+
 
 import kaitka.vishal.meeta.purple_ecommerce.Adapters.CategoryAdapter;
 import kaitka.vishal.meeta.purple_ecommerce.Adapters.GridProductLayoutAdapter;
@@ -139,30 +131,41 @@ public class HomeFragmentPurple extends Fragment {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
-                                if ((long) documentSnapshot.get("view_type") == 0){
+                                if ((long) documentSnapshot.get("view_type") == 0) {
                                     List<SliderModel> sliderModelList = new ArrayList<>();
-                                    long no_of_banners = (long)documentSnapshot.get("no_of_banners");
-                                    for (long x = 1; x < no_of_banners + 1; x++){
-                                        String banners = documentSnapshot.get("banner_"+x).toString();
-                                        String banner_background = documentSnapshot.get("banner_"+x+"_bg").toString();
+                                    long no_of_banners = (long) documentSnapshot.get("no_of_banners");
+                                    for (long x = 1; x < no_of_banners + 1; x++) {
+                                        String banners = documentSnapshot.get("banner_" + x).toString();
+                                        String banner_background = documentSnapshot.get("banner_" + x + "_bg").toString();
                                         sliderModelList.add(new SliderModel(banners, banner_background));
                                     }
 
-                                    homePageModelList.add(new HomePageModel(0,sliderModelList));
+                                    homePageModelList.add(new HomePageModel(0, sliderModelList));
 
-                                }
-                                else if ((long) documentSnapshot.get("view_type") == 1){
+                                } else if ((long) documentSnapshot.get("view_type") == 1) {
 
                                     String stripAdBanner = documentSnapshot.get("strip_ad_banner").toString();
                                     String stripAdBackground = documentSnapshot.get("background").toString();
                                     homePageModelList.add(new HomePageModel(1, stripAdBanner, stripAdBackground));
 
 
-                                }
-                                else if ((long) documentSnapshot.get("view_type") == 2){
+                                } else if ((long) documentSnapshot.get("view_type") == 2) {
+                                    List<HorizontalProductScrollModel> horizontalProductScrollModelList = new ArrayList<>();
+                                    long no_of_products = (long) documentSnapshot.get("no_of_products");
 
-                                }
-                                else if ((long) documentSnapshot.get("view_type") == 3){
+                                    for (long x = 1; x < no_of_products + 1; x++) {
+                                        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(
+                                                documentSnapshot.get("product_ID_" + x).toString(),
+                                                documentSnapshot.get("product_image_" + x).toString(),
+                                                documentSnapshot.get("product_title_" + x).toString(),
+                                                documentSnapshot.get("product_subtitle_" + x).toString(),
+                                                documentSnapshot.get("product_price_" + x).toString()
+                                        ));
+                                    }
+                                    homePageModelList.add(new HomePageModel(2,documentSnapshot.get("layout_title").toString(), documentSnapshot.get("layout_background").toString(), horizontalProductScrollModelList));
+
+
+                                } else if ((long) documentSnapshot.get("view_type") == 3) {
 
                                 }
 
@@ -177,9 +180,6 @@ public class HomeFragmentPurple extends Fragment {
                         }
                     }
                 });
-
-
-
 
 
         ///////////////////////////// Main Recycler view ends here

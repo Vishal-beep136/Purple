@@ -10,6 +10,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+
 import java.util.List;
 
 import kaitka.vishal.meeta.purple_ecommerce.Modellls.HorizontalProductScrollModel;
@@ -36,7 +39,7 @@ public class HorizontalProductScrollAdapter extends RecyclerView.Adapter<Horizon
 
     @Override
     public void onBindViewHolder(@NonNull HorizontalProductScrollAdapter.ViewHolder holder, int position) {
-        int resource = horizontalProductScrollModelList.get(position).getProductImage();
+        String resource = horizontalProductScrollModelList.get(position).getProductImage();
         String title = horizontalProductScrollModelList.get(position).getProductTitle();
         String description = horizontalProductScrollModelList.get(position).getProductDescription();
         String price = horizontalProductScrollModelList.get(position).getProductPrice();
@@ -81,8 +84,8 @@ public class HorizontalProductScrollAdapter extends RecyclerView.Adapter<Horizon
             });
 
         }
-        private void setProductImage(int resource){
-            productImage.setImageResource(resource);
+        private void setProductImage(String resource){
+            Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions().placeholder(R.drawable.samsung)).into(productImage);
         }
         private void setProductTitle(String title){
             productTitle.setText(title);

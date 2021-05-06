@@ -74,21 +74,6 @@ public class ViewAllActivity extends AppCompatActivity {
             //second condition starts here
             binding.gridViewAllActivity.setVisibility(View.VISIBLE);
             List<HorizontalProductScrollModel> horizontalProductScrollModelList = new ArrayList<>();
-            horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.samsung, "Samsung 12 pro max", "512 GB Storage With 64 MP camera", "₹1,000,00"));
-            horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.iphone_12, "Iphone 12 pro max", "512 GB Storage With 64 MP camera", "₹2,000,00"));
-            horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.samsung, "Samsung 12 pro max", "512 GB Storage With 64 MP camera", "₹1,000,00"));
-            horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.iphone_12, "Iphone 12 pro max", "512 GB Storage With 64 MP camera", "₹2,000,00"));
-            horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.samsung, "Samsung 12 pro max", "512 GB Storage With 64 MP camera", "₹1,000,00"));
-            horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.iphone_12, "Iphone 12 pro max", "512 GB Storage With 64 MP camera", "₹2,000,00"));
-            horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.samsung, "Samsung 12 pro max", "512 GB Storage With 64 MP camera", "₹1,000,00"));
-            horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.iphone_12, "Iphone 12 pro max", "512 GB Storage With 64 MP camera", "₹2,000,00"));
-            horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.samsung, "Samsung 12 pro max", "512 GB Storage With 64 MP camera", "₹1,000,00"));
-            horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.iphone_12, "Iphone 12 pro max", "512 GB Storage With 64 MP camera", "₹2,000,00"));
-            horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.samsung, "Samsung 12 pro max", "512 GB Storage With 64 MP camera", "₹1,000,00"));
-            horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.iphone_12, "Iphone 12 pro max", "512 GB Storage With 64 MP camera", "₹2,000,00"));
-            horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.samsung, "Samsung 12 pro max", "512 GB Storage With 64 MP camera", "₹1,000,00"));
-            horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.iphone_12, "Iphone 12 pro max", "512 GB Storage With 64 MP camera", "₹2,000,00"));
-
             GridProductLayoutAdapter gridProductLayoutAdapter = new GridProductLayoutAdapter(horizontalProductScrollModelList);
             binding.gridViewAllActivity.setAdapter(gridProductLayoutAdapter);
 

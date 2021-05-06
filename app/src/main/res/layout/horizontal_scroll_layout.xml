@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/slider_background"
-    android:layout_margin="@dimen/_8mdp"
-    android:paddingBottom="@dimen/_8mdp"
-    android:elevation="@dimen/_3mdp"
+    android:id="@+id/containerHorizontalScroll"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/_8mdp"
+    android:background="@drawable/slider_background"
+    android:elevation="@dimen/_3mdp"
+    android:paddingBottom="@dimen/_8mdp">
 
     <TextView
         android:id="@+id/horizontal__scroll_layout_title"
@@ -16,9 +16,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="Deals of the day!"
+        android:textColor="@color/text_color"
         android:textSize="@dimen/_16font_mdp"
         android:textStyle="bold"
-        android:textColor="@color/text_color"
         app:layout_constraintBottom_toBottomOf="@+id/horizontal_scroll_view_all_btn"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/horizontal_scroll_view_all_btn"
@@ -41,5 +41,5 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/horizontal_scroll_view_all_btn"/>
+        app:layout_constraintTop_toBottomOf="@+id/horizontal_scroll_view_all_btn" />
 </androidx.constraintlayout.widget.ConstraintLayout>
