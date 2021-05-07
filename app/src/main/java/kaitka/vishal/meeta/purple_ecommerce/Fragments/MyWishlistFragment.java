@@ -51,19 +51,6 @@ public class MyWishlistFragment extends Fragment {
 
         List<WishlistModel> wishlistModelList = new ArrayList<>();
 
-        //added some dummy list or you can say dumy wislist;
-        wishlistModelList.add(new WishlistModel(R.drawable.iphone_12,"Iphone 12 pro max",1,"4.5",1345,"Rs.1,00,000","1,50,000", "Cash On Delivery Available"));
-
-        wishlistModelList.add(new WishlistModel(R.drawable.samsung,"Samsung 12 pro max",0,"4.5",1845,"Rs.1,00,000","1,50,000", "Cash On Delivery Available"));
-
-        wishlistModelList.add(new WishlistModel(R.drawable.iphone_12,"Iphone 12 pro max",2,"4.5",145,"Rs.1,00,000","1,50,000", "Cash On Delivery Available"));
-
-        wishlistModelList.add(new WishlistModel(R.drawable.samsung,"Samsung 12 pro max",2,"4.5",15,"Rs.1,00,000","1,50,000", "Cash On Delivery Available"));
-
-        wishlistModelList.add(new WishlistModel(R.drawable.iphone_12,"Iphone 12 pro max",3,"4.5",1145,"Rs.1,00,000","1,50,000", "Cash On Delivery Available"));
-
-        wishlistModelList.add(new WishlistModel(R.drawable.samsung,"Samsung pro max",0,"4.5",2145,"Rs.1,00,000","1,50,000", "Cash On Delivery"));
-
         WishlistAdapter wishlistAdapter = new WishlistAdapter(wishlistModelList,true);
         wishlistRecyclerView.setAdapter(wishlistAdapter);
         wishlistAdapter.notifyDataSetChanged();

@@ -1,16 +1,16 @@
 package kaitka.vishal.meeta.purple_ecommerce.Modellls;
 
 public class WishlistModel {
-    private  int productImage;
+    private String productImage;
     private String productTitle;
-    private int freeCoupens;
+    private Long freeCoupens;
     private String rating;
-    private int totalRatings;
+    private Long totalRatings;
     private String productPrice;
     private String cuttedPrice;
-    private String paymentMethod;
+    private boolean COD;
 
-    public WishlistModel(int productImage, String productTitle, int freeCoupens, String rating, int totalRatings, String productPrice, String cuttedPrice, String paymentMethod) {
+    public WishlistModel(String productImage, String productTitle, Long freeCoupens, String rating, Long totalRatings, String productPrice, String cuttedPrice, boolean COD) {
         this.productImage = productImage;
         this.productTitle = productTitle;
         this.freeCoupens = freeCoupens;
@@ -18,14 +18,14 @@ public class WishlistModel {
         this.totalRatings = totalRatings;
         this.productPrice = productPrice;
         this.cuttedPrice = cuttedPrice;
-        this.paymentMethod = paymentMethod;
+        this.COD = COD;
     }
 
-    public int getProductImage() {
+    public String getProductImage() {
         return productImage;
     }
 
-    public void setProductImage(int productImage) {
+    public void setProductImage(String productImage) {
         this.productImage = productImage;
     }
 
@@ -37,11 +37,11 @@ public class WishlistModel {
         this.productTitle = productTitle;
     }
 
-    public int getFreeCoupens() {
+    public Long getFreeCoupens() {
         return freeCoupens;
     }
 
-    public void setFreeCoupens(int freeCoupens) {
+    public void setFreeCoupens(Long freeCoupens) {
         this.freeCoupens = freeCoupens;
     }
 
@@ -53,11 +53,11 @@ public class WishlistModel {
         this.rating = rating;
     }
 
-    public int getTotalRatings() {
+    public Long getTotalRatings() {
         return totalRatings;
     }
 
-    public void setTotalRatings(int totalRatings) {
+    public void setTotalRatings(Long totalRatings) {
         this.totalRatings = totalRatings;
     }
 
@@ -77,11 +77,11 @@ public class WishlistModel {
         this.cuttedPrice = cuttedPrice;
     }
 
-    public String getPaymentMethod() {
-        return paymentMethod;
+    public boolean isCOD() {
+        return COD;
     }
 
-    public void setPaymentMethod(String paymentMethod) {
-        this.paymentMethod = paymentMethod;
+    public void setCOD(boolean COD) {
+        this.COD = COD;
     }
 }

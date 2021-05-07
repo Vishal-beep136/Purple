@@ -12,6 +12,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+
 import java.util.List;
 
 import kaitka.vishal.meeta.purple_ecommerce.Activites.ProductDetailsActivity;
@@ -37,14 +40,14 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        int resourse = wishlistModelList.get(position).getProductImage();
+        String resourse = wishlistModelList.get(position).getProductImage();
         String title = wishlistModelList.get(position).getProductTitle();
-        int freeCoupens = wishlistModelList.get(position).getFreeCoupens();
+        Long freeCoupens = wishlistModelList.get(position).getFreeCoupens();
         String rating = wishlistModelList.get(position).getRating();
-        int totalRatings = wishlistModelList.get(position).getTotalRatings();
+        Long totalRatings = wishlistModelList.get(position).getTotalRatings();
         String productPrice = wishlistModelList.get(position).getProductPrice();
         String cuttedPrice = wishlistModelList.get(position).getCuttedPrice();
-        String paymentMethod = wishlistModelList.get(position).getPaymentMethod();
+        Boolean paymentMethod = wishlistModelList.get(position).isCOD();
 
         holder.setData(resourse,title,freeCoupens,rating,totalRatings,productPrice,cuttedPrice,paymentMethod);
 
@@ -76,7 +79,7 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
             freeCoupens = itemView.findViewById(R.id.free_coupens_of_wishlist);
             coupenIcon = itemView.findViewById(R.id.coupen_icon_label);
             rating = itemView.findViewById(R.id.tv_product_rating_miniview);
-            totalRatings = itemView.findViewById(R.id.total_ratings_on_wishlist_item_layout);
+            totalRatings = itemView.findViewById(R.id.total_ratings_on_wishlist);
             priceCut = itemView.findViewById(R.id.price_cut);
             productPrice = itemView.findViewById(R.id.product_price_on_wishlist);
             cuttedPrice = itemView.findViewById(R.id.cutted_price_on_wislist);
@@ -85,8 +88,13 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
 
 
         }
-        private void setData(int resourse, String title, int freeCoupensNo, String avearageRate, int totalRatingsNo, String price, String cuttedPriceValue, String payMethod){
-            productImage.setImageResource(resourse);
+        private void setData(String resourse, String title, Long freeCoupensNo, String avearageRate, Long totalRatingsNo, String price, String cuttedPriceValue, Boolean COD){
+
+            Glide.with(itemView.getContext())
+                    .load(resourse)
+                    .apply(new RequestOptions().placeholder(R.drawable.ic_shopping_cart))
+                    .into(productImage);
+
             productTitle.setText(title);
             if (freeCoupensNo != 0){
                 coupenIcon.setVisibility(View.VISIBLE);
@@ -104,11 +112,15 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
 
             }
             rating.setText(avearageRate);
-            totalRatings.setText(totalRatingsNo + "(ratings)");
-            productPrice.setText(price);
-            cuttedPrice.setText(cuttedPriceValue);
-            paymentMethod.setText(payMethod);
-
+            totalRatings.setText("("+ totalRatingsNo +")");
+            productPrice.setText("₹"+price+".00/-");
+            cuttedPrice.setText("₹"+cuttedPriceValue+".00 /-");
+            if (COD){
+                paymentMethod.setVisibility(View.VISIBLE);
+            }
+            else {
+                paymentMethod.setVisibility(View.INVISIBLE);
+            }
             if (wishlist){
                 deleteBtn.setVisibility(View.VISIBLE);
 

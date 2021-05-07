@@ -23,13 +23,15 @@
 
     <TextView
         android:id="@+id/product_title_of_wishlist"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
         android:text="Samsung galaxy s20"
         android:textColor="@color/black"
         android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/product_image_of_wislist"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -91,12 +93,12 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/total_ratings_on_wishlist_item_layout"
+        android:id="@+id/total_ratings_on_wishlist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginBottom="4dp"
-        android:text="(8990000) ratings"
+        android:text="(8900) ratings"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/linearLayout2"
         app:layout_constraintStart_toEndOf="@+id/linearLayout2" />

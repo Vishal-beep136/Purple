@@ -58,6 +58,23 @@ public class HomePageModel {
     /////HORIZONTAL PRODUCT LAYOUT STARTS HERE && GIRD PRODUCT LAYOUT
     private String title;
     private List<HorizontalProductScrollModel> horizontalProductScrollModelList;
+    private List<WishlistModel> viewAllProductList;
+    public HomePageModel(int type, String title, String backgroundColor, List<HorizontalProductScrollModel> horizontalProductScrollModelList, List<WishlistModel> viewAllProductList)
+    {
+        this.type = type;
+        this.title = title;
+        this.backgroundColor = backgroundColor;
+        this.horizontalProductScrollModelList = horizontalProductScrollModelList;
+        this.viewAllProductList = viewAllProductList;
+    }
+
+    public List<WishlistModel> getViewAllProductList() {
+        return viewAllProductList;
+    }
+
+    public void setViewAllProductList(List<WishlistModel> viewAllProductList) {
+        this.viewAllProductList = viewAllProductList;
+    }
 
     public HomePageModel(int type, String title, String backgroundColor, List<HorizontalProductScrollModel> horizontalProductScrollModelList) {
         this.type = type;

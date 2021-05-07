@@ -20,6 +20,7 @@ import kaitka.vishal.meeta.purple_ecommerce.Modellls.CategoryModel;
 import kaitka.vishal.meeta.purple_ecommerce.Modellls.HomePageModel;
 import kaitka.vishal.meeta.purple_ecommerce.Modellls.HorizontalProductScrollModel;
 import kaitka.vishal.meeta.purple_ecommerce.Modellls.SliderModel;
+import kaitka.vishal.meeta.purple_ecommerce.Modellls.WishlistModel;
 
 public class DBqueries {
 
@@ -28,8 +29,7 @@ public class DBqueries {
     public static List<HomePageModel> homePageModelList = new ArrayList<>();
 
 
-
-    public static void loadCategories(CategoryAdapter categoryAdapter, Context context){
+    public static void loadCategories(CategoryAdapter categoryAdapter, Context context) {
         firebaseFirestore.collection("CATEGORIES").orderBy("index").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -52,7 +52,7 @@ public class DBqueries {
 
     }
 
-    public static void loadFragmentData(HomePageAdapter adapter, Context context){
+    public static void loadFragmentData(HomePageAdapter adapter, Context context) {
         firebaseFirestore
                 .collection("CATEGORIES")
                 .document("HOME")
@@ -83,6 +83,9 @@ public class DBqueries {
 
 
                                 } else if ((long) documentSnapshot.get("view_type") == 2) {
+
+                                    List<WishlistModel> viewAllProductList = new ArrayList<>();
+
                                     List<HorizontalProductScrollModel> horizontalProductScrollModelList = new ArrayList<>();
                                     long no_of_products = (long) documentSnapshot.get("no_of_products");
 
@@ -94,8 +97,19 @@ public class DBqueries {
                                                 documentSnapshot.get("product_subtitle_" + x).toString(),
                                                 documentSnapshot.get("product_price_" + x).toString()
                                         ));
+
+                                        viewAllProductList.add(new WishlistModel(
+                                                documentSnapshot.get("product_image_"+x).toString(),
+                                                documentSnapshot.get("product_full_title_" + x).toString(),
+                                                (Long) documentSnapshot.get("free_coupens_" + x),
+                                                documentSnapshot.get("average_rating_" + x).toString(),
+                                                (Long) documentSnapshot.get("totalRate"+x),
+                                                documentSnapshot.get("product_price_" + x).toString(),
+                                                documentSnapshot.get("cutted_price_" + x).toString(),
+                                                (boolean)documentSnapshot.get("COD_" + x)));
                                     }
-                                    homePageModelList.add(new HomePageModel(2, documentSnapshot.get("layout_title").toString(), documentSnapshot.get("layout_background").toString(), horizontalProductScrollModelList));
+                                    homePageModelList.add(new HomePageModel(2, documentSnapshot.get("layout_title").toString(), documentSnapshot.get("layout_background").toString(), horizontalProductScrollModelList, viewAllProductList));
+
 
 
                                 } else if ((long) documentSnapshot.get("view_type") == 3) {
@@ -122,7 +136,7 @@ public class DBqueries {
 
                         } else {
                             String error = task.getException().getMessage();
-                            Toast.makeText(context,error, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
 
                         }
                     }

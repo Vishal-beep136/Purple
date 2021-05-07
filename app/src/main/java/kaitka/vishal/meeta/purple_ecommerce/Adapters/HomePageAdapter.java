@@ -33,6 +33,7 @@ import kaitka.vishal.meeta.purple_ecommerce.Activites.ViewAllActivity;
 import kaitka.vishal.meeta.purple_ecommerce.Modellls.HomePageModel;
 import kaitka.vishal.meeta.purple_ecommerce.Modellls.HorizontalProductScrollModel;
 import kaitka.vishal.meeta.purple_ecommerce.Modellls.SliderModel;
+import kaitka.vishal.meeta.purple_ecommerce.Modellls.WishlistModel;
 import kaitka.vishal.meeta.purple_ecommerce.R;
 
 public class HomePageAdapter extends RecyclerView.Adapter {
@@ -108,9 +109,10 @@ public class HomePageAdapter extends RecyclerView.Adapter {
             case HomePageModel.HORIZONTAL_PRODUCT_VIEW:
                 String layoutColor = homePageModelList.get(position).getBackgroundColor();
                 String horizontalLayoutTitle = homePageModelList.get(position).getTitle();
+                List<WishlistModel> viewAllProductList = homePageModelList.get(position).getViewAllProductList();
                 List<HorizontalProductScrollModel> horizontalProductScrollModelList = homePageModelList.get(position)
                         .getHorizontalProductScrollModelList();
-                ((HorizontalProductViewholder) holder).setHorizontalProductLayout(horizontalProductScrollModelList, horizontalLayoutTitle, layoutColor);
+                ((HorizontalProductViewholder) holder).setHorizontalProductLayout(horizontalProductScrollModelList, horizontalLayoutTitle, layoutColor, viewAllProductList);
 
                 break;
 
@@ -281,7 +283,7 @@ public class HomePageAdapter extends RecyclerView.Adapter {
             horizontalRecyclerView = itemView.findViewById(R.id.horizontal_scroll_layout_recyclerview);
             horizontalRecyclerView.setRecycledViewPool(recycledViewPool);
         }
-        private void setHorizontalProductLayout(List<HorizontalProductScrollModel> horizontalProductScrollModelList, String title, String color){
+        private void setHorizontalProductLayout(List<HorizontalProductScrollModel> horizontalProductScrollModelList, String title, String color, List<WishlistModel> viewAllProductList){
             containerHorizontal.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(color)));
             horizontalLayoutTitle.setText(title);
             if (horizontalProductScrollModelList.size() > 8){
@@ -289,8 +291,10 @@ public class HomePageAdapter extends RecyclerView.Adapter {
                 horizontalLayoutViewAllBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        ViewAllActivity.wishlistModelList = viewAllProductList;
                         Intent viewAllIntent = new Intent(itemView.getContext(), ViewAllActivity.class);
                         viewAllIntent.putExtra("layout_code", 0);
+                        viewAllIntent.putExtra("title",title);
                         itemView.getContext().startActivity(viewAllIntent);
                     }
                 });
