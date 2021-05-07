@@ -17,14 +17,18 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
+
 import kaitka.vishal.meeta.purple_ecommerce.Adapters.CategoryAdapter;
 import kaitka.vishal.meeta.purple_ecommerce.Adapters.HomePageAdapter;
+import kaitka.vishal.meeta.purple_ecommerce.Modellls.HomePageModel;
 import kaitka.vishal.meeta.purple_ecommerce.R;
 
 import static kaitka.vishal.meeta.purple_ecommerce.DBqueries.categoryModelList;
-import static kaitka.vishal.meeta.purple_ecommerce.DBqueries.homePageModelList;
+import static kaitka.vishal.meeta.purple_ecommerce.DBqueries.lists;
 import static kaitka.vishal.meeta.purple_ecommerce.DBqueries.loadCategories;
 import static kaitka.vishal.meeta.purple_ecommerce.DBqueries.loadFragmentData;
+import static kaitka.vishal.meeta.purple_ecommerce.DBqueries.loadedCategoriesName;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -76,18 +80,19 @@ public class HomeFragmentPurple extends Fragment {
             LinearLayoutManager testingLayoutManager = new LinearLayoutManager(getContext());
             testingLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
             homePageRecyclerView.setLayoutManager(testingLayoutManager);
-            adapter = new HomePageAdapter(homePageModelList);
-            homePageRecyclerView.setAdapter(adapter);
 
-            if (homePageModelList.size() == 0) {
-                loadFragmentData(adapter, getContext());
-            }
-            else
-            {
+            if (lists.size() == 0) {
+                loadedCategoriesName.add("HOME");
+                lists.add(new ArrayList<HomePageModel>());
+                adapter = new HomePageAdapter(lists.get(0));
+                loadFragmentData(adapter, getContext(), 0, "Home");
+
+            } else {
+                adapter = new HomePageAdapter(lists.get(0));
                 adapter.notifyDataSetChanged();
             }
-        }
-        else {
+            homePageRecyclerView.setAdapter(adapter);
+        } else {
             Glide.with(this).load(R.drawable.no_internet_connection).into(noInternetConnection);
             noInternetConnection.setVisibility(View.VISIBLE);
         }

@@ -21,9 +21,15 @@ import kaitka.vishal.meeta.purple_ecommerce.Modellls.HorizontalProductScrollMode
 import kaitka.vishal.meeta.purple_ecommerce.Modellls.SliderModel;
 import kaitka.vishal.meeta.purple_ecommerce.R;
 
+import static kaitka.vishal.meeta.purple_ecommerce.DBqueries.lists;
+import static kaitka.vishal.meeta.purple_ecommerce.DBqueries.loadFragmentData;
+import static kaitka.vishal.meeta.purple_ecommerce.DBqueries.loadedCategoriesName;
+
 public class CategoryActivity extends AppCompatActivity {
 
     private RecyclerView categoryRecyclerView;
+    private HomePageAdapter adapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +53,21 @@ public class CategoryActivity extends AppCompatActivity {
         testingLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         categoryRecyclerView.setLayoutManager(testingLayoutManager);
 
-        List<HomePageModel> homePageModelList = new ArrayList<>();
-        HomePageAdapter adapter = new HomePageAdapter(homePageModelList);
+        int listPosition = 0;
+        for (int x = 0; x<loadedCategoriesName.size(); x++){
+            if (loadedCategoriesName.get(x).equals(title.toUpperCase())){
+                listPosition  = x;
+            }
+        }
+        if (listPosition == 0){
+            loadedCategoriesName.add(title.toUpperCase());
+            lists.add(new ArrayList<HomePageModel>());
+            adapter = new HomePageAdapter(lists.get(loadedCategoriesName.size() -1));
+            loadFragmentData(adapter, this, loadedCategoriesName.size() -1, title);
+        }
+        else {
+            adapter = new HomePageAdapter(lists.get(listPosition));
+        }
         categoryRecyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 

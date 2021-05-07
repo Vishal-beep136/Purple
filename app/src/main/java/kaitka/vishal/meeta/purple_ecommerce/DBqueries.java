@@ -26,7 +26,10 @@ public class DBqueries {
 
     public static FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     public static List<CategoryModel> categoryModelList = new ArrayList<>();
-    public static List<HomePageModel> homePageModelList = new ArrayList<>();
+//    public static List<HomePageModel> homePageModelList = new ArrayList<>();
+
+    public static List<List<HomePageModel>> lists = new ArrayList<>();
+    public static List<String> loadedCategoriesName = new ArrayList<>();
 
 
     public static void loadCategories(CategoryAdapter categoryAdapter, Context context) {
@@ -52,10 +55,10 @@ public class DBqueries {
 
     }
 
-    public static void loadFragmentData(HomePageAdapter adapter, Context context) {
+    public static void loadFragmentData(HomePageAdapter adapter, Context context, final int index, String categoryName) {
         firebaseFirestore
                 .collection("CATEGORIES")
-                .document("HOME")
+                .document(categoryName.toUpperCase())
                 .collection("TOP_DEALS")
                 .orderBy("index")
                 .get()
@@ -73,13 +76,13 @@ public class DBqueries {
                                         sliderModelList.add(new SliderModel(banners, banner_background));
                                     }
 
-                                    homePageModelList.add(new HomePageModel(0, sliderModelList));
+                                    lists.get(index).add(new HomePageModel(0, sliderModelList));
 
                                 } else if ((long) documentSnapshot.get("view_type") == 1) {
 
                                     String stripAdBanner = documentSnapshot.get("strip_ad_banner").toString();
                                     String stripAdBackground = documentSnapshot.get("background").toString();
-                                    homePageModelList.add(new HomePageModel(1, stripAdBanner, stripAdBackground));
+                                    lists.get(index).add(new HomePageModel(1, stripAdBanner, stripAdBackground));
 
 
                                 } else if ((long) documentSnapshot.get("view_type") == 2) {
@@ -108,7 +111,7 @@ public class DBqueries {
                                                 documentSnapshot.get("cutted_price_" + x).toString(),
                                                 (boolean)documentSnapshot.get("COD_" + x)));
                                     }
-                                    homePageModelList.add(new HomePageModel(2, documentSnapshot.get("layout_title").toString(), documentSnapshot.get("layout_background").toString(), horizontalProductScrollModelList, viewAllProductList));
+                                    lists.get(index).add(new HomePageModel(2, documentSnapshot.get("layout_title").toString(), documentSnapshot.get("layout_background").toString(), horizontalProductScrollModelList, viewAllProductList));
 
 
 
@@ -125,7 +128,7 @@ public class DBqueries {
                                                 documentSnapshot.get("product_price_" + x).toString()
                                         ));
                                     }
-                                    homePageModelList.add(new HomePageModel(3, documentSnapshot.get("layout_title").toString(), documentSnapshot.get("layout_background").toString(), gridLayoutModelList));
+                                    lists.get(index).add(new HomePageModel(3, documentSnapshot.get("layout_title").toString(), documentSnapshot.get("layout_background").toString(), gridLayoutModelList));
 
 
                                 }
@@ -141,8 +144,6 @@ public class DBqueries {
                         }
                     }
                 });
-
-
     }
 
 }
