@@ -4,6 +4,8 @@ import android.content.Context;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -16,6 +18,7 @@ import java.util.List;
 
 import kaitka.vishal.meeta.purple_ecommerce.Adapters.CategoryAdapter;
 import kaitka.vishal.meeta.purple_ecommerce.Adapters.HomePageAdapter;
+import kaitka.vishal.meeta.purple_ecommerce.Fragments.HomeFragmentPurple;
 import kaitka.vishal.meeta.purple_ecommerce.Modellls.CategoryModel;
 import kaitka.vishal.meeta.purple_ecommerce.Modellls.HomePageModel;
 import kaitka.vishal.meeta.purple_ecommerce.Modellls.HorizontalProductScrollModel;
@@ -32,7 +35,7 @@ public class DBqueries {
     public static List<String> loadedCategoriesName = new ArrayList<>();
 
 
-    public static void loadCategories(CategoryAdapter categoryAdapter, Context context) {
+    public static void loadCategories(RecyclerView categoryRecyclerView, final Context context) {
         firebaseFirestore.collection("CATEGORIES").orderBy("index").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -42,6 +45,8 @@ public class DBqueries {
                                 categoryModelList.add(new CategoryModel(documentSnapshot.get("icon")
                                         .toString(), documentSnapshot.get("categoryName").toString()));
                             }
+                            CategoryAdapter categoryAdapter = new CategoryAdapter(categoryModelList);
+                            categoryRecyclerView.setAdapter(categoryAdapter);
                             categoryAdapter.notifyDataSetChanged();
 
                         } else {
@@ -55,7 +60,8 @@ public class DBqueries {
 
     }
 
-    public static void loadFragmentData(HomePageAdapter adapter, Context context, final int index, String categoryName) {
+
+    public static void loadFragmentData(RecyclerView homePageRecyclerView, Context context, final int index, String categoryName) {
         firebaseFirestore
                 .collection("CATEGORIES")
                 .document(categoryName.toUpperCase())
@@ -134,7 +140,11 @@ public class DBqueries {
                                 }
 
                             }
-                            adapter.notifyDataSetChanged();
+                            HomePageAdapter homePageAdapter = new HomePageAdapter(lists.get(index));
+                            homePageRecyclerView.setAdapter(homePageAdapter);
+                            homePageAdapter.notifyDataSetChanged();
+                            HomeFragmentPurple.swipeRefreshLayout.setRefreshing(false);
+
 
 
                         } else {
