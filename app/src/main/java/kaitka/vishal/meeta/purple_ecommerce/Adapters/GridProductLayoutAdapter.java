@@ -62,9 +62,9 @@ public class GridProductLayoutAdapter extends BaseAdapter {
             TextView productDescription = view.findViewById(R.id.h_s_product_description);
             TextView productPrice = view.findViewById(R.id.h_s_product_price);
 
-            //todo: remove view to parent
+
             Glide.with(parent.getContext()).load(horizontalProductScrollModelList.get(position).getProductImage())
-            .apply(new RequestOptions().placeholder(R.drawable.ic_shopping_cart)).into(productImage);
+            .apply(new RequestOptions().placeholder(R.drawable.mini_place_holder)).into(productImage);
             productTitle.setText(horizontalProductScrollModelList.get(position).getProductTitle());
             productDescription.setText(horizontalProductScrollModelList.get(position).getProductDescription());
             productPrice.setText("₹ "+horizontalProductScrollModelList.get(position).getProductPrice()+".00/-");

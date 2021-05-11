@@ -35,7 +35,7 @@ public class SliderAdapter extends PagerAdapter {
         bannerContainer.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(sliderModelList.get(position).getBackgroundColor())));
         ImageView banner = view.findViewById(R.id.banner_slide);
         Glide.with(container.getContext()).load(sliderModelList.get(position).getBanner())
-                .apply(new RequestOptions().placeholder(R.drawable.banner1))
+                .apply(new RequestOptions().placeholder(R.drawable.placeholder))
                 .into(banner);
 
 

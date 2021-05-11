@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,6 +25,7 @@ import kaitka.vishal.meeta.purple_ecommerce.R;
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
 
     private List<CategoryModel> categoryModelList;
+    private int lastPosition = -1;
 
 
     public CategoryAdapter(List<CategoryModel> categoryModelList) {
@@ -42,8 +45,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     public void onBindViewHolder(@NonNull CategoryAdapter.ViewHolder holder, int position) {
         String icon = categoryModelList.get(position).getCategoryIconLink();
         String name = categoryModelList.get(position).getCategoryName();
-        holder.setCategory(name);
+        holder.setCategory(name,position);
         holder.setCategoryIcon(icon);
+        if (lastPosition < position) {
+            Animation animation = AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.fade_in);
+            holder.itemView.setAnimation(animation);
+            lastPosition = position;
+        }
+
     }
 
     @Override
@@ -67,22 +76,29 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             if (!iconUrl.equals("null")) {
                 Glide.with(itemView.getContext())
                         .load(iconUrl)
-                        .apply(new RequestOptions().placeholder(R.drawable.home))
+                        .apply(new RequestOptions().placeholder(R.drawable.mini_place_holder))
                         .into(categoryIcon);
+            }
+            else {
+                categoryIcon.setImageResource(R.drawable.home);
             }
 
 
         }
-        private void setCategory(final String name){
+        private void setCategory(final String name, final int position){
             categoryName.setText(name);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent categoryIntent = new Intent(itemView.getContext(), CategoryActivity.class);
-                    categoryIntent.putExtra("CategoryName", name);
-                    itemView.getContext().startActivity(categoryIntent);
-                }
-            });
+            if (!name.equals("")) {
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (position != 0){
+                            Intent categoryIntent = new Intent(itemView.getContext(), CategoryActivity.class);
+                            categoryIntent.putExtra("CategoryName", name);
+                            itemView.getContext().startActivity(categoryIntent);
+                        }
+                    }
+                });
+            }
 
         }
     }

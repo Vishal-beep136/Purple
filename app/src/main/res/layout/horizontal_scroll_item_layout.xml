@@ -19,7 +19,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/iphone_12" />
+        app:srcCompat="@drawable/mini_place_holder" />
 
     <TextView
         android:id="@+id/h_s_product_title"
