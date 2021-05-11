@@ -9,6 +9,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -27,6 +29,8 @@ import kaitka.vishal.meeta.purple_ecommerce.Modellls.WishlistModel;
 
 public class DBqueries {
 
+    public static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    public static FirebaseUser currentUser = firebaseAuth.getCurrentUser();
     public static FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     public static List<CategoryModel> categoryModelList = new ArrayList<>();
 //    public static List<HomePageModel> homePageModelList = new ArrayList<>();

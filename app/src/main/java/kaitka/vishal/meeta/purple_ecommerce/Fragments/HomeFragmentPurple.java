@@ -14,7 +14,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -30,6 +32,7 @@ import kaitka.vishal.meeta.purple_ecommerce.Modellls.HorizontalProductScrollMode
 import kaitka.vishal.meeta.purple_ecommerce.Modellls.SliderModel;
 import kaitka.vishal.meeta.purple_ecommerce.Modellls.WishlistModel;
 import kaitka.vishal.meeta.purple_ecommerce.R;
+import kaitka.vishal.meeta.purple_ecommerce.ui.home.HomeFragment;
 
 import static kaitka.vishal.meeta.purple_ecommerce.DBqueries.categoryModelList;
 import static kaitka.vishal.meeta.purple_ecommerce.DBqueries.lists;
@@ -59,6 +62,7 @@ public class HomeFragmentPurple extends Fragment {
     private ImageView noInternetConnection;
     private ConnectivityManager connectivityManager;
     private NetworkInfo networkInfo;
+    private Button retryBtn;
 
 
     @Override
@@ -76,6 +80,7 @@ public class HomeFragmentPurple extends Fragment {
         noInternetConnection = view.findViewById(R.id.no_internet_connection);
         categoryRecyclerView = view.findViewById(R.id.category_recyclerview);
         homePageRecyclerView = view.findViewById(R.id.home_page_recyclerview);
+        retryBtn = view.findViewById(R.id.retry_btn);
         swipeRefreshLayout.setColorSchemeColors(getContext().getResources().getColor(R.color.colorPrimary),getContext().getResources().getColor(R.color.colorPrimary),getContext().getResources().getColor(R.color.colorPrimary));
 
 
@@ -134,6 +139,9 @@ public class HomeFragmentPurple extends Fragment {
         networkInfo = connectivityManager.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected() == true) {
             noInternetConnection.setVisibility(View.GONE);
+            retryBtn.setVisibility(View.GONE);
+            categoryRecyclerView.setVisibility(View.VISIBLE);
+            homePageRecyclerView.setVisibility(View.VISIBLE);
 
             if (categoryModelList.size() == 0) {
                 loadCategories(categoryRecyclerView, getContext());
@@ -155,40 +163,57 @@ public class HomeFragmentPurple extends Fragment {
             homePageRecyclerView.setAdapter(adapter);
         }
         else {
+            categoryRecyclerView.setVisibility(View.GONE);
+            homePageRecyclerView.setVisibility(View.GONE);
+
             Glide.with(this).load(R.drawable.no_internet_connection).into(noInternetConnection);
             noInternetConnection.setVisibility(View.VISIBLE);
+            retryBtn.setVisibility(View.VISIBLE);
         }
 
         /// refresh layout
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                swipeRefreshLayout.setRefreshing(true);
-
-                categoryModelList.clear();
-                lists.clear();
-                loadedCategoriesName.clear();
-                if (networkInfo != null && networkInfo.isConnected() == true) {
-                    noInternetConnection.setVisibility(View.GONE);
-                    categoryAdapter = new CategoryAdapter(categoryModelFakeList);
-                    adapter = new HomePageAdapter(homePageModelFakeList);
-                    categoryRecyclerView.setAdapter(categoryAdapter);
-                    loadCategories(categoryRecyclerView, getContext());
-                    homePageRecyclerView.setAdapter(adapter);
-
-                    loadedCategoriesName.add("HOME");
-                    lists.add(new ArrayList<HomePageModel>());
-                    loadFragmentData(homePageRecyclerView, getContext(), 0, "Home");
-                }
-                else {
-                    Glide.with(HomeFragmentPurple.this).load(R.drawable.no_internet_connection).into(noInternetConnection);
-                    noInternetConnection.setVisibility(View.VISIBLE);
-                }
-
-            }
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            swipeRefreshLayout.setRefreshing(true);
+            reloadPage();
         });
         /// refresh layout
 
+        retryBtn.setOnClickListener(v -> {
+            reloadPage();       
+        });
+
         return view;
+    }
+    private void reloadPage(){
+        networkInfo = connectivityManager.getActiveNetworkInfo();
+        categoryModelList.clear();
+        lists.clear();
+        loadedCategoriesName.clear();
+
+        if (networkInfo != null && networkInfo.isConnected() == true) {
+            noInternetConnection.setVisibility(View.GONE);
+            retryBtn.setVisibility(View.GONE);
+            categoryRecyclerView.setVisibility(View.VISIBLE);
+            homePageRecyclerView.setVisibility(View.VISIBLE);
+
+            categoryAdapter = new CategoryAdapter(categoryModelFakeList);
+            adapter = new HomePageAdapter(homePageModelFakeList);
+            categoryRecyclerView.setAdapter(categoryAdapter);
+            loadCategories(categoryRecyclerView, getContext());
+            homePageRecyclerView.setAdapter(adapter);
+
+            loadedCategoriesName.add("HOME");
+            lists.add(new ArrayList<HomePageModel>());
+            loadFragmentData(homePageRecyclerView, getContext(), 0, "Home");
+        }
+        else {
+            Toast.makeText(getContext(), "Please connect to internet!", Toast.LENGTH_SHORT).show();
+            categoryRecyclerView.setVisibility(View.GONE);
+            homePageRecyclerView.setVisibility(View.GONE);
+            Glide.with(HomeFragmentPurple.this).load(R.drawable.no_internet_connection).into(noInternetConnection);
+            noInternetConnection.setVisibility(View.VISIBLE);
+            retryBtn.setVisibility(View.VISIBLE);
+            swipeRefreshLayout.setRefreshing(false);
+        }
     }
 }

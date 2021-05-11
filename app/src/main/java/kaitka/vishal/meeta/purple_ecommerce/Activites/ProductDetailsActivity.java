@@ -44,6 +44,9 @@ import kaitka.vishal.meeta.purple_ecommerce.Modellls.RewardModel;
 import kaitka.vishal.meeta.purple_ecommerce.R;
 
 import static kaitka.vishal.meeta.purple_ecommerce.Activites.MainActivity.showCart;
+import static kaitka.vishal.meeta.purple_ecommerce.DBqueries.currentUser;
+import static kaitka.vishal.meeta.purple_ecommerce.Fragments.SignInFragment.disableCloseBtn;
+import static kaitka.vishal.meeta.purple_ecommerce.Fragments.SignUpFragment.disableCloseBtnSignUp;
 
 public class ProductDetailsActivity extends AppCompatActivity {
 
@@ -57,6 +60,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private TextView tvCodIndicator;
 
     private TabLayout viewpagerIndicator;
+    private LinearLayout couponRedemptionLayout;
     private Button coupenRedeemBtn;
 
     private TextView rewardTitle;
@@ -76,11 +80,12 @@ public class ProductDetailsActivity extends AppCompatActivity {
     /////rating layout ends here
 
     private Button buyNowBtn;
+    private LinearLayout addToCartBtn;
 
     private static Boolean ALREADY_ADDED_TO_WISHLIST = false;
     private FloatingActionButton addToWishlistBtn;
 
-//product description
+    //product description
     private ConstraintLayout productsDetailsOnlyContainer;
     private ConstraintLayout productDetailsTabsContainer;
     private ViewPager productDetailsViewPager;
@@ -99,6 +104,9 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private static LinearLayout selectedCoupon;
     /////coupendialog
 
+    //defining sign in dialog
+    private Dialog signInDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,6 +119,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         productDetailsViewPager = findViewById(R.id.product_details_viewpager);
         productDetailsTabLayout = findViewById(R.id.product_details_tablayout);
         buyNowBtn = findViewById(R.id.buy_now_btn);
+        addToCartBtn = findViewById(R.id.add_to_cart_btn);
         coupenRedeemBtn = findViewById(R.id.coupen_redemption_btn);
         productTitle = findViewById(R.id.product_title);
         averageRatingMiniView = findViewById(R.id.tv_product_rating_miniview);
@@ -129,6 +138,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         totalRatingsFigure = findViewById(R.id.total_rating_figures);
         ratingsProgressbarContainer = findViewById(R.id.rating_progressbar_container);
         averageRating = findViewById(R.id.avarage_rating);
+        couponRedemptionLayout = findViewById(R.id.coupoun_redemption_layout);
 
 
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -136,90 +146,88 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
         firebaseFirestore.collection("PRODUCTS")
                 .document("Xlu8ouCyuvULEMwz9LRq")
-                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot documentSnapshot = task.getResult();
-                    for (long x = 1; x < (Long) documentSnapshot.get("no_of_product_images") + 1; x++) {
-                        productImages.add(documentSnapshot.get("product_image_" + x).toString());
-                    }
-                    ProductImagesAdapter productImagesAdapter = new ProductImagesAdapter(productImages);
-                    productImagesViewPager.setAdapter(productImagesAdapter);
+                .get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot documentSnapshot = task.getResult();
+                for (long x = 1; x < (Long) documentSnapshot.get("no_of_product_images") + 1; x++) {
+                    productImages.add(documentSnapshot.get("product_image_" + x).toString());
+                }
+                ProductImagesAdapter productImagesAdapter = new ProductImagesAdapter(productImages);
+                productImagesViewPager.setAdapter(productImagesAdapter);
 
-                    productTitle.setText(documentSnapshot.get("product_title_1").toString());
-                    averageRatingMiniView.setText(documentSnapshot.get("average_rating").toString());
-                    totalRatingMiniView.setText("( " + (Long) documentSnapshot.get("total_ratings") + " ) ratings");
-                    productPrice.setText("₹" + documentSnapshot.get("product_price").toString() + ".00/-");
-                    cuttedPrice.setText("₹" + documentSnapshot.get("cutted_price").toString() + ".00/-");
+                productTitle.setText(documentSnapshot.get("product_title_1").toString());
+                averageRatingMiniView.setText(documentSnapshot.get("average_rating").toString());
+                totalRatingMiniView.setText("( " + (Long) documentSnapshot.get("total_ratings") + " ) ratings");
+                productPrice.setText("₹" + documentSnapshot.get("product_price").toString() + ".00/-");
+                cuttedPrice.setText("₹" + documentSnapshot.get("cutted_price").toString() + ".00/-");
 
-                    if ((boolean) documentSnapshot.get("COD")) {
-                        codIndicator.setVisibility(View.VISIBLE);
-                        tvCodIndicator.setVisibility(View.VISIBLE);
-                    } else {
-                        codIndicator.setVisibility(View.INVISIBLE);
-                        tvCodIndicator.setVisibility(View.INVISIBLE);
-                    }
-
-                    rewardTitle.setText((long) documentSnapshot.get("free_coupens") + documentSnapshot.get("free_coupen_title").toString());
-                    rewardBody.setText(documentSnapshot.get("free_coupen_body").toString());
-
-                    if ((boolean) documentSnapshot.get("use_tab_layout")) {
-                        productDetailsTabsContainer.setVisibility(View.VISIBLE);
-                        productsDetailsOnlyContainer.setVisibility(View.GONE);
-                        productDescription = documentSnapshot.get("product_description").toString();
-
-
-                        productOthersDetails = documentSnapshot.get("product_other_details").toString();
-                        for (long x = 1; x < (long) documentSnapshot.get("total_spec_titles") + 1; x++) {
-                            String specTitle = documentSnapshot.get("spec_title_" + x).toString();
-
-                            productSpecificationModelList.add(new ProductSpecificationModel(0, specTitle));
-
-                            for (long j = 1; j < (long) documentSnapshot.get("spec_title_" + x + "_total_fields") + 1; j++) {
-                                String specName = documentSnapshot.get("spec_title_" + x + "_field_" + j+ "_name").toString();
-                                String specValue = documentSnapshot.get("spec_title_" + x + "_field_" + j + "_value").toString();
-
-                                productSpecificationModelList.add(new ProductSpecificationModel(1, specName, specValue));
-                            }
-
-                        }
-                    } else {
-                        productDetailsTabsContainer.setVisibility(View.GONE);
-                        productsDetailsOnlyContainer.setVisibility(View.VISIBLE);
-                        productOnlyDescriptionBody.setText(documentSnapshot.get("product_description").toString());
-                    }
-
-
-                    totalRatings.setText((long) documentSnapshot.get("total_ratings") + "ratings");
-
-                    for (int x = 0; x < 5; x++) {
-                        TextView rating = (TextView) ratingsNoContainer.getChildAt(x);
-                        rating.setText(String.valueOf((long) documentSnapshot.get("star_" + (5 - x))));
-                        ProgressBar progressBar = (ProgressBar) ratingsProgressbarContainer.getChildAt(x);
-                        int maxProgress = Integer.parseInt(String.valueOf((long) documentSnapshot.get("total_ratings")));
-                        progressBar.setMax(maxProgress);
-                        progressBar.setProgress(Integer.parseInt(String.valueOf((long) documentSnapshot.get("star_" + (5 - x)))));
-                    }
-                    totalRatingsFigure.setText(String.valueOf((long) documentSnapshot.get("total_ratings")));
-                    averageRating.setText(documentSnapshot.get("average_rating").toString());
-                    productDetailsViewPager.setAdapter(new ProductDetailsAdapter(getSupportFragmentManager(), productDetailsTabLayout.getTabCount(),productDescription,productOthersDetails,productSpecificationModelList));
-
-
-
+                if ((boolean) documentSnapshot.get("COD")) {
+                    codIndicator.setVisibility(View.VISIBLE);
+                    tvCodIndicator.setVisibility(View.VISIBLE);
                 } else {
-                    Log.d("TAG", "onComplete:" + task.getException().getLocalizedMessage());
-                    Toast.makeText(ProductDetailsActivity.this, "Error: " + task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                    codIndicator.setVisibility(View.INVISIBLE);
+                    tvCodIndicator.setVisibility(View.INVISIBLE);
                 }
 
+                rewardTitle.setText((long) documentSnapshot.get("free_coupens") + documentSnapshot.get("free_coupen_title").toString());
+                rewardBody.setText(documentSnapshot.get("free_coupen_body").toString());
+
+                if ((boolean) documentSnapshot.get("use_tab_layout")) {
+                    productDetailsTabsContainer.setVisibility(View.VISIBLE);
+                    productsDetailsOnlyContainer.setVisibility(View.GONE);
+                    productDescription = documentSnapshot.get("product_description").toString();
+
+
+                    productOthersDetails = documentSnapshot.get("product_other_details").toString();
+                    for (long x = 1; x < (long) documentSnapshot.get("total_spec_titles") + 1; x++) {
+                        String specTitle = documentSnapshot.get("spec_title_" + x).toString();
+
+                        productSpecificationModelList.add(new ProductSpecificationModel(0, specTitle));
+
+                        for (long j = 1; j < (long) documentSnapshot.get("spec_title_" + x + "_total_fields") + 1; j++) {
+                            String specName = documentSnapshot.get("spec_title_" + x + "_field_" + j + "_name").toString();
+                            String specValue = documentSnapshot.get("spec_title_" + x + "_field_" + j + "_value").toString();
+
+                            productSpecificationModelList.add(new ProductSpecificationModel(1, specName, specValue));
+                        }
+
+                    }
+                } else {
+                    productDetailsTabsContainer.setVisibility(View.GONE);
+                    productsDetailsOnlyContainer.setVisibility(View.VISIBLE);
+                    productOnlyDescriptionBody.setText(documentSnapshot.get("product_description").toString());
+                }
+
+
+                totalRatings.setText((long) documentSnapshot.get("total_ratings") + "ratings");
+
+                for (int x = 0; x < 5; x++) {
+                    TextView rating = (TextView) ratingsNoContainer.getChildAt(x);
+                    rating.setText(String.valueOf((long) documentSnapshot.get("star_" + (5 - x))));
+                    ProgressBar progressBar = (ProgressBar) ratingsProgressbarContainer.getChildAt(x);
+                    int maxProgress = Integer.parseInt(String.valueOf((long) documentSnapshot.get("total_ratings")));
+                    progressBar.setMax(maxProgress);
+                    progressBar.setProgress(Integer.parseInt(String.valueOf((long) documentSnapshot.get("star_" + (5 - x)))));
+                }
+                totalRatingsFigure.setText(String.valueOf((long) documentSnapshot.get("total_ratings")));
+                averageRating.setText(documentSnapshot.get("average_rating").toString());
+                productDetailsViewPager.setAdapter(new ProductDetailsAdapter(getSupportFragmentManager(), productDetailsTabLayout.getTabCount(), productDescription, productOthersDetails, productSpecificationModelList));
+
+
+            } else {
+                Log.d("TAG", "onComplete:" + task.getException().getLocalizedMessage());
+                Toast.makeText(ProductDetailsActivity.this, "Error: " + task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
+
         });
 
         viewpagerIndicator.setupWithViewPager(productImagesViewPager, true);
 
-        addToWishlistBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        addToWishlistBtn.setOnClickListener(v -> {
+            if (currentUser == null){
+                signInDialog.show();
+            }
+            else {
                 if (ALREADY_ADDED_TO_WISHLIST) {
                     ALREADY_ADDED_TO_WISHLIST = false;
                     addToWishlistBtn.setSupportImageTintList(ColorStateList.valueOf(Color.parseColor("#9e9e9e")));
@@ -227,8 +235,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
                     ALREADY_ADDED_TO_WISHLIST = true;
                     addToWishlistBtn.setSupportImageTintList(getResources().getColorStateList(R.color.colorPrimary));
                 }
-
             }
+
         });
 
         productDetailsViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(productDetailsTabLayout));
@@ -254,9 +262,12 @@ public class ProductDetailsActivity extends AppCompatActivity {
         rateNowContainer = findViewById(R.id.rate_now_container);
         for (int x = 0; x < rateNowContainer.getChildCount(); x++) {
             final int startPostion = x;
-            rateNowContainer.getChildAt(x).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            rateNowContainer.getChildAt(x).setOnClickListener(v -> {
+                //checking
+                if (currentUser == null) {
+                    signInDialog.show();
+                    Log.d("Dialog", "onCreate: Dialog showed");
+                } else {
                     setRating(startPostion);
                 }
             });
@@ -264,11 +275,25 @@ public class ProductDetailsActivity extends AppCompatActivity {
         }
         /////rating layout ends here
 
-        buyNowBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        buyNowBtn.setOnClickListener(v -> {
+            if (currentUser == null) {
+                signInDialog.show();
+            } else {
                 Intent deliveryIntent = new Intent(ProductDetailsActivity.this, DeliveryActivity.class);
                 startActivity(deliveryIntent);
+            }
+
+        });
+        addToCartBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currentUser == null) {
+                    signInDialog.show();
+                } else {
+                    //todo: add to cart
+                    Toast.makeText(ProductDetailsActivity.this, "sorry. this service is currently not available!", Toast.LENGTH_SHORT).show();
+
+                }
             }
         });
 
@@ -309,21 +334,55 @@ public class ProductDetailsActivity extends AppCompatActivity {
         couponsRecyclerViews.setAdapter(myRewardsAdapter);
         myRewardsAdapter.notifyDataSetChanged();
 
-        toggleRecyclerView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDialogRecyclerView();
-            }
-        });
+        toggleRecyclerView.setOnClickListener(v -> showDialogRecyclerView());
 
         ////coupon dialog
 
-        coupenRedeemBtn.setOnClickListener(new View.OnClickListener() {
+        coupenRedeemBtn.setOnClickListener(v -> checkCoupenPriceDialog.show());
+
+        //// Sign In Dialog
+        //sign in dialog is start from here
+        signInDialog = new Dialog(ProductDetailsActivity.this);
+        signInDialog.setContentView(R.layout.sign_in_dialog);
+        signInDialog.setCancelable(true);
+        signInDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        Button dialogSignInBtn = signInDialog.findViewById(R.id.sign_in_btn);
+        Button dialogSignUpBtn = signInDialog.findViewById(R.id.sign_up_btn);
+        Intent registerIntent = new Intent(ProductDetailsActivity.this, RegisterActivity.class);
+
+        //dialog sign In btn setOnClickListener
+        dialogSignInBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkCoupenPriceDialog.show();
+                disableCloseBtn = true;
+                disableCloseBtnSignUp = true;
+                signInDialog.dismiss();
+                RegisterActivity.setSignUpFragment = false;
+                startActivity(registerIntent);
+                finish();
             }
         });
+
+        //dialog sign UP btn setOnClickListener
+        dialogSignUpBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                disableCloseBtn = true;
+                disableCloseBtnSignUp = true;
+                signInDialog.dismiss();
+                RegisterActivity.setSignUpFragment = true;
+                startActivity(registerIntent);
+                finish();
+            }
+        });
+        //// Sign In Dialog
+        if (currentUser == null){
+            //here
+            couponRedemptionLayout.setVisibility(View.GONE);
+        }
+        else {
+            couponRedemptionLayout.setVisibility(View.VISIBLE);
+        }
 
 
     }
@@ -369,10 +428,15 @@ public class ProductDetailsActivity extends AppCompatActivity {
             //todo search
             return true;
         } else if (id == R.id.main_cart_icon_product_image) {
-            Intent cartIntent = new Intent(ProductDetailsActivity.this, MainActivity.class);
-            showCart = true;
-            startActivity(cartIntent);
-            return true;
+            if (currentUser == null){
+                signInDialog.show();
+            }
+            else {
+                Intent cartIntent = new Intent(ProductDetailsActivity.this, MainActivity.class);
+                showCart = true;
+                startActivity(cartIntent);
+                return true;
+            }
         }
 
         return super.onOptionsItemSelected(item);

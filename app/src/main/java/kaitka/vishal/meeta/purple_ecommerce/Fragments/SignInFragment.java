@@ -56,6 +56,7 @@ public class SignInFragment extends Fragment {
 
     private String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+.[a-z]+";
 
+    public static boolean disableCloseBtn = false;
     private FirebaseAuth firebaseAuth;
 
     @Override
@@ -79,34 +80,28 @@ public class SignInFragment extends Fragment {
 
         closeBtn = view.findViewById(R.id.signInCloseBtn);
         signInBtn = view.findViewById(R.id.signInBtn);
+
+        if (disableCloseBtn){
+            closeBtn.setVisibility(View.GONE);
+        }
+        else {
+            closeBtn.setVisibility(View.VISIBLE);
+        }
+
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        dontHaveAnAccount.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setFragment(new SignUpFragment());
+        dontHaveAnAccount.setOnClickListener(v -> setFragment(new SignUpFragment()));
 
-            }
+        forgotPassword.setOnClickListener(v -> {
+            onResetPasswordFragment = true;
+            setFragment(new ResetPasswordFragment());
         });
 
-        forgotPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onResetPasswordFragment = true;
-                setFragment(new ResetPasswordFragment());
-            }
-        });
-
-        closeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(), MainActivity.class));
-            }
-        });
+        closeBtn.setOnClickListener(v -> startActivity(new Intent(getActivity(), MainActivity.class)));
 
 
         email.addTextChangedListener(new TextWatcher() {
@@ -142,25 +137,27 @@ public class SignInFragment extends Fragment {
             }
         });
 
-        signInBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.show();
-                firebaseAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString())
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                dialog.dismiss();
-                                if (task.isSuccessful()){
-                                    startActivity(new Intent(getActivity(), MainActivity.class));
-                                    getActivity().finish();
-                                }
-                                else {
-                                    Toast.makeText(getActivity(), task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                                }
+        signInBtn.setOnClickListener(v -> {
+            dialog.show();
+            firebaseAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString())
+                    .addOnCompleteListener(task -> {
+                        dialog.dismiss();
+                        if (task.isSuccessful()){
+                            //it can be in a method.
+                            if (disableCloseBtn){
+                                disableCloseBtn = false;
                             }
-                        });
-            }
+                            else {
+                                startActivity(new Intent(getActivity(), MainActivity.class));
+                            }
+                            getActivity().finish();
+
+                            //it can be in a method.
+                        }
+                        else {
+                            Toast.makeText(getActivity(), task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
         });
 
     }

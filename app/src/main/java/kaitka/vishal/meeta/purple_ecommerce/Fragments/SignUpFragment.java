@@ -63,6 +63,7 @@ public class SignUpFragment extends Fragment {
     private FirebaseFirestore firebaseFirestore;
 
     private String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+.[a-z]+";
+    public static boolean disableCloseBtnSignUp = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -88,6 +89,13 @@ public class SignUpFragment extends Fragment {
         dialog.setMessage("creating account please wait..");
         dialog.setCancelable(false);
 
+        if (disableCloseBtnSignUp){
+            closeBtn.setVisibility(View.GONE);
+        }
+        else {
+            closeBtn.setVisibility(View.VISIBLE);
+        }
+
 
         return view;
 
@@ -97,19 +105,9 @@ public class SignUpFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        alreadyHaveAnAccount.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setFragment(new SignInFragment());
-            }
-        });
+        alreadyHaveAnAccount.setOnClickListener(v -> setFragment(new SignInFragment()));
 
-        closeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(), MainActivity.class));
-            }
-        });
+        closeBtn.setOnClickListener(v -> startActivity(new Intent(getActivity(), MainActivity.class)));
 
         email.addTextChangedListener(new TextWatcher() {
             @Override
@@ -127,6 +125,8 @@ public class SignUpFragment extends Fragment {
 
             }
         });
+
+        //full name textChangedListener
         fullName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -143,6 +143,8 @@ public class SignUpFragment extends Fragment {
 
             }
         });
+
+        //password textChangedListener;
         password.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -160,6 +162,8 @@ public class SignUpFragment extends Fragment {
 
             }
         });
+
+        //confirm password textChangedListener
         confirmPassword.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -177,12 +181,8 @@ public class SignUpFragment extends Fragment {
             }
         });
 
-        signUpBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkEmailAndPassword();
-            }
-        });
+        //SignUpBtn Click Listener
+        signUpBtn.setOnClickListener(v -> checkEmailAndPassword());
     }
 
 
@@ -229,46 +229,46 @@ public class SignUpFragment extends Fragment {
 
                 dialog.show();
                 firebaseAuth.createUserWithEmailAndPassword(email.getText().toString(), password.getText().toString())
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                dialog.dismiss();
-                                if (task.isSuccessful()){
+                        .addOnCompleteListener(task -> {
+                            dialog.dismiss();
+                            if (task.isSuccessful()){
 
-                                    Map<Object, String> userData = new HashMap<>();
-                                    userData.put("fullname", fullName.getText().toString());
+                                Map<Object, String> userData = new HashMap<>();
+                                userData.put("fullname", fullName.getText().toString());
 
-                                    firebaseFirestore.collection("USERS")
-                                            .add(userData)
-                                            .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<DocumentReference> task) {
-                                                    if (task.isSuccessful()){
-                                                        Intent mainIntent = new Intent(getActivity(), MainActivity.class);
-                                                        startActivity(mainIntent);
-                                                        getActivity().finish();
-                                                    }
-                                                    else {
-                                                        signUpBtn.setEnabled(true);
-                                                        signUpBtn.setTextColor(getResources().getColor(R.color.black));
-                                                        String error = task.getException().getMessage();
-                                                        Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
-                                                    }
+                                firebaseFirestore.collection("USERS")
+                                        .add(userData)
+                                        .addOnCompleteListener(task1 -> {
+                                            if (task1.isSuccessful()){
+                                                //it can be in a method.
+                                                if (disableCloseBtnSignUp){
+                                                    disableCloseBtnSignUp = false;
                                                 }
-                                            });
-                                }
-                                else {
-                                    signUpBtn.setEnabled(true);
-                                    signUpBtn.setTextColor(getResources().getColor(R.color.black));
-                                    String error = task.getException().getMessage();
-                                    Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
-                                }
+                                                else {
+                                                    startActivity(new Intent(getActivity(), MainActivity.class));
+                                                }
+                                                getActivity().finish();
+
+                                                //it can be in a method.
+                                            }
+                                            else {
+                                                signUpBtn.setEnabled(true);
+                                                signUpBtn.setTextColor(getResources().getColor(R.color.black));
+                                                String error = task1.getException().getMessage();
+                                                Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                            }
+                            else {
+                                signUpBtn.setEnabled(true);
+                                signUpBtn.setTextColor(getResources().getColor(R.color.black));
+                                String error = task.getException().getMessage();
+                                Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
                             }
                         });
             }
             else {
-                confirmPassword.setError("Password Does't Matched!");
-
+                confirmPassword.setError("Password Doesn't Matched!");
             }
 
         }
