@@ -43,17 +43,16 @@ import kaitka.vishal.meeta.purple_ecommerce.R;
 public class SignUpFragment extends Fragment {
 
 
-
     public SignUpFragment() {
         // Required empty public constructor
     }
 
     private TextView alreadyHaveAnAccount;
     private FrameLayout parentFrameLayout;
-    private EditText  email;
-    private EditText  fullName;
-    private EditText  password;
-    private EditText  confirmPassword;
+    private EditText email;
+    private EditText fullName;
+    private EditText password;
+    private EditText confirmPassword;
 
     private ImageButton closeBtn;
     private Button signUpBtn;
@@ -89,10 +88,9 @@ public class SignUpFragment extends Fragment {
         dialog.setMessage("creating account please wait..");
         dialog.setCancelable(false);
 
-        if (disableCloseBtnSignUp){
+        if (disableCloseBtnSignUp) {
             closeBtn.setVisibility(View.GONE);
-        }
-        else {
+        } else {
             closeBtn.setVisibility(View.VISIBLE);
         }
 
@@ -186,8 +184,6 @@ public class SignUpFragment extends Fragment {
     }
 
 
-
-
     private void setFragment(Fragment fragment) {
         FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
         fragmentTransaction.setCustomAnimations(R.anim.slide_from_left, R.anim.slide_out_from_right);
@@ -198,25 +194,22 @@ public class SignUpFragment extends Fragment {
 
     @SuppressLint("ResourceAsColor")
     private void checkInputs() {
-        if (!TextUtils.isEmpty(email.getText())){
-            if (!TextUtils.isEmpty(fullName.getText())){
-                if (!TextUtils.isEmpty(password.getText()) && password.length() >= 6){
-                    if (!TextUtils.isEmpty(confirmPassword.getText())){
+        if (!TextUtils.isEmpty(email.getText())) {
+            if (!TextUtils.isEmpty(fullName.getText())) {
+                if (!TextUtils.isEmpty(password.getText()) && password.length() >= 6) {
+                    if (!TextUtils.isEmpty(confirmPassword.getText())) {
                         signUpBtn.setEnabled(true);
                         signUpBtn.setTextColor(R.color.white);
-                    }
-                    else {
+                    } else {
                         signUpBtn.setEnabled(false);
                         signUpBtn.setTextColor(R.color.light_black);
                     }
                 }
-            }
-            else {
+            } else {
                 signUpBtn.setEnabled(false);
                 signUpBtn.setTextColor(R.color.light_black);
             }
-        }
-        else {
+        } else {
             signUpBtn.setEnabled(false);
             signUpBtn.setTextColor(R.color.light_black);
 
@@ -224,56 +217,74 @@ public class SignUpFragment extends Fragment {
     }//check inputs method
 
     private void checkEmailAndPassword() {
-        if (email.getText().toString().matches(emailPattern)){
-            if (password.getText().toString().equals(confirmPassword.getText().toString())){
+        if (email.getText().toString().matches(emailPattern)) {
+            if (password.getText().toString().equals(confirmPassword.getText().toString())) {
 
                 dialog.show();
                 firebaseAuth.createUserWithEmailAndPassword(email.getText().toString(), password.getText().toString())
                         .addOnCompleteListener(task -> {
                             dialog.dismiss();
-                            if (task.isSuccessful()){
+                            if (task.isSuccessful()) {
 
-                                Map<Object, String> userData = new HashMap<>();
+                                Map<String,Object> userData = new HashMap<>();
                                 userData.put("fullname", fullName.getText().toString());
 
-                                firebaseFirestore.collection("USERS")
-                                        .add(userData)
-                                        .addOnCompleteListener(task1 -> {
-                                            if (task1.isSuccessful()){
-                                                //it can be in a method.
-                                                if (disableCloseBtnSignUp){
-                                                    disableCloseBtnSignUp = false;
-                                                }
-                                                else {
-                                                    startActivity(new Intent(getActivity(), MainActivity.class));
-                                                }
-                                                getActivity().finish();
+                                firebaseFirestore.collection("USERS").document(firebaseAuth.getUid())
+                                        .set(userData)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    Map<String, Object> listSize = new HashMap<>();
+                                                    listSize.put("list_size", (long) 0);
+                                                    firebaseFirestore.collection("USERS").document(firebaseAuth.getUid())
+                                                            .collection("USER_DATA").document("MY_WISHLIST")
+                                                            .set(listSize).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            if (task.isSuccessful()){
+                                                                mainIntent();
+                                                            }
+                                                            else {
+                                                                dialog.show();
+                                                                signUpBtn.setEnabled(true);
+                                                                signUpBtn.setTextColor(SignUpFragment.this.getResources().getColor(R.color.black));
+                                                                String error = task.getException().getMessage();
+                                                                Toast.makeText(SignUpFragment.this.getActivity(), error, Toast.LENGTH_SHORT).show();
+                                                            }
 
-                                                //it can be in a method.
-                                            }
-                                            else {
-                                                signUpBtn.setEnabled(true);
-                                                signUpBtn.setTextColor(getResources().getColor(R.color.black));
-                                                String error = task1.getException().getMessage();
-                                                Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    });
+
+                                                } else {
+                                                    String error = task.getException().getMessage();
+                                                    Toast.makeText(SignUpFragment.this.getActivity(), error, Toast.LENGTH_SHORT).show();
+                                                }
                                             }
                                         });
-                            }
-                            else {
+                            } else {
                                 signUpBtn.setEnabled(true);
                                 signUpBtn.setTextColor(getResources().getColor(R.color.black));
                                 String error = task.getException().getMessage();
                                 Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
                             }
                         });
-            }
-            else {
+            } else {
                 confirmPassword.setError("Password Doesn't Matched!");
             }
 
-        }
-        else {
+        } else {
             email.setError("Invalid Email!");
         }
     }
+
+    private void mainIntent() {
+        if (disableCloseBtnSignUp) {
+            disableCloseBtnSignUp = false;
+        } else {
+            SignUpFragment.this.startActivity(new Intent(SignUpFragment.this.getActivity(), MainActivity.class));
+        }
+        SignUpFragment.this.getActivity().finish();
+    }
+
 }

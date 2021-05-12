@@ -1,16 +1,19 @@
 package kaitka.vishal.meeta.purple_ecommerce;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.widget.Toast;
 
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-
-
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -36,6 +39,7 @@ public class DBqueries {
 
     public static List<List<HomePageModel>> lists = new ArrayList<>();
     public static List<String> loadedCategoriesName = new ArrayList<>();
+    public static List<String> wishlist = new ArrayList<>();
 
 
     public static void loadCategories(RecyclerView categoryRecyclerView, final Context context) {
@@ -59,7 +63,6 @@ public class DBqueries {
 
 
     }
-
 
     public static void loadFragmentData(RecyclerView homePageRecyclerView, Context context, final int index, String categoryName) {
         firebaseFirestore
@@ -106,17 +109,16 @@ public class DBqueries {
                                     ));
 
                                     viewAllProductList.add(new WishlistModel(
-                                            documentSnapshot.get("product_image_"+x).toString(),
+                                            documentSnapshot.get("product_image_" + x).toString(),
                                             documentSnapshot.get("product_full_title_" + x).toString(),
                                             (Long) documentSnapshot.get("free_coupens_" + x),
                                             documentSnapshot.get("average_rating_" + x).toString(),
-                                            (Long) documentSnapshot.get("totalRate"+x),
+                                            (Long) documentSnapshot.get("totalRate" + x),
                                             documentSnapshot.get("product_price_" + x).toString(),
                                             documentSnapshot.get("cutted_price_" + x).toString(),
-                                            (boolean)documentSnapshot.get("COD_" + x)));
+                                            (boolean) documentSnapshot.get("COD_" + x)));
                                 }
                                 lists.get(index).add(new HomePageModel(2, documentSnapshot.get("layout_title").toString(), documentSnapshot.get("layout_background").toString(), horizontalProductScrollModelList, viewAllProductList));
-
 
 
                             } else if ((long) documentSnapshot.get("view_type") == 3) {
@@ -144,12 +146,35 @@ public class DBqueries {
                         HomeFragmentPurple.swipeRefreshLayout.setRefreshing(false);
 
 
-
                     } else {
                         String error = task.getException().getMessage();
                         Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
 
                     }
+                });
+    }
+
+    public static void loadWishlist(Context context, ProgressDialog dialog) {
+
+        firebaseFirestore.collection("USERS")
+                .document(FirebaseAuth.getInstance().getUid())
+                .collection("USER_DATA")
+                .document("MY_WISHLIST")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (long x = 0; x < (long)task.getResult().get("list_size"); x++){
+                            //here you must check the todo: product ID is like this or in Capital letters
+                            wishlist.add(task.getResult().get("product_ID_"+x).toString());
+
+
+                        }
+
+                    } else {
+                        String error = task.getException().getMessage();
+                        Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
+                    }
+                    dialog.dismiss();
                 });
     }
 

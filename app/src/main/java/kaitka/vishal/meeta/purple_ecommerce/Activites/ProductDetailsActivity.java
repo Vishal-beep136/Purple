@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -34,11 +35,14 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import kaitka.vishal.meeta.purple_ecommerce.Adapters.MyRewardsAdapter;
 import kaitka.vishal.meeta.purple_ecommerce.Adapters.ProductDetailsAdapter;
 import kaitka.vishal.meeta.purple_ecommerce.Adapters.ProductImagesAdapter;
+import kaitka.vishal.meeta.purple_ecommerce.DBqueries;
 import kaitka.vishal.meeta.purple_ecommerce.Fragments.ProductDescriptionFragment;
 import kaitka.vishal.meeta.purple_ecommerce.Fragments.ProductSpecificationFragment;
 import kaitka.vishal.meeta.purple_ecommerce.Modellls.ProductSpecificationModel;
@@ -59,6 +63,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private TextView cuttedPrice;
     private ImageView codIndicator;
     private TextView tvCodIndicator;
+    private ProgressDialog dialog;
 
     private TabLayout viewpagerIndicator;
     private LinearLayout couponRedemptionLayout;
@@ -109,6 +114,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private Dialog signInDialog;
 
     private FirebaseUser currentUser;
+    private String productId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,18 +149,26 @@ public class ProductDetailsActivity extends AppCompatActivity {
         averageRating = findViewById(R.id.avarage_rating);
         couponRedemptionLayout = findViewById(R.id.coupoun_redemption_layout);
 
+        //defining the dialog and remember t code studio doesn't do like so this type of work you are done by you ok!
+        dialog = new ProgressDialog(this, R.style.AppCompatAlertDialogStyle);
+        dialog.setIcon(R.drawable.ic_like_heart);
+        dialog.setMessage("Loading...");
+        dialog.setCancelable(false);
+        dialog.show();
+
+
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         List<String> productImages = new ArrayList<>();
 
+        productId = getIntent().getStringExtra("PRODUCT_ID");
         firebaseFirestore.collection("PRODUCTS")
-                .document(getIntent().getStringExtra("PRODUCT_ID"))
+                .document(productId)
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot documentSnapshot = task.getResult();
-                    //todo here you get error line no. 158
                     for (long x = 1; x < (Long) documentSnapshot.get("no_of_product_images") + 1; x++) {
                         productImages.add(documentSnapshot.get("product_image_" + x).toString());
                     }
@@ -219,8 +233,23 @@ public class ProductDetailsActivity extends AppCompatActivity {
                     averageRating.setText(documentSnapshot.get("average_rating").toString());
                     productDetailsViewPager.setAdapter(new ProductDetailsAdapter(ProductDetailsActivity.this.getSupportFragmentManager(), productDetailsTabLayout.getTabCount(), productDescription, productOthersDetails, productSpecificationModelList));
 
+                    if (DBqueries.wishlist.size() == 0){
+                        DBqueries.loadWishlist(ProductDetailsActivity.this, dialog);
+                    }
+                    else {
+                        dialog.dismiss();
+                    }
+
+                    if (DBqueries.wishlist.contains(productId)){
+                        ALREADY_ADDED_TO_WISHLIST = true;
+                        addToWishlistBtn.setSupportImageTintList(getResources().getColorStateList(R.color.colorPrimary));
+                    }
+                    else {
+                        ALREADY_ADDED_TO_WISHLIST = false;
+                    }
 
                 } else {
+                    dialog.dismiss();
                     Log.d("TAG", "onComplete:" + task.getException().getLocalizedMessage());
                     Toast.makeText(ProductDetailsActivity.this, "Error: " + task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                 }
@@ -238,8 +267,57 @@ public class ProductDetailsActivity extends AppCompatActivity {
                     ALREADY_ADDED_TO_WISHLIST = false;
                     addToWishlistBtn.setSupportImageTintList(ColorStateList.valueOf(Color.parseColor("#9e9e9e")));
                 } else {
-                    ALREADY_ADDED_TO_WISHLIST = true;
-                    addToWishlistBtn.setSupportImageTintList(getResources().getColorStateList(R.color.colorPrimary));
+
+
+                    Map<String,Object> addProduct = new HashMap<>();
+                    addProduct.put("product_ID_"+String.valueOf(DBqueries.wishlist.size()),productId);
+
+
+                    firebaseFirestore.collection("USERS")
+                            .document(currentUser.getUid())
+                            .collection("USER_DATA")
+                            .document("MY_WISHLIST")
+                            .set(addProduct)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()){
+
+                                        Map<String ,Object> updateListSize = new HashMap<>();
+                                        updateListSize.put("list_size", (long) (DBqueries.wishlist.size() + 1));
+
+                                        firebaseFirestore.collection("USERS")
+                                                .document(currentUser.getUid())
+                                                .collection("USER_DATA")
+                                                .document("MY_WISHLIST")
+                                                .update(updateListSize)
+                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        if (task.isSuccessful()){
+                                                            ALREADY_ADDED_TO_WISHLIST = true;
+                                                            addToWishlistBtn.setSupportImageTintList(getResources().getColorStateList(R.color.colorPrimary));
+                                                            DBqueries.wishlist.add(productId);
+                                                            Toast.makeText(ProductDetailsActivity.this, "Added to your wishlist!", Toast.LENGTH_SHORT).show();
+
+                                                        }
+                                                        else {
+                                                            Log.d("TAG", "onComplete:" + task.getException().getLocalizedMessage());
+                                                            Toast.makeText(ProductDetailsActivity.this, "Error: " + task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                                                        }
+
+                                                    }
+                                                });
+
+                                    }
+                                    else {
+                                        Log.d("TAG", "onComplete:" + task.getException().getLocalizedMessage());
+                                        Toast.makeText(ProductDetailsActivity.this, "Error: " + task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+
+                                }
+                            });
+
                 }
             }
 
