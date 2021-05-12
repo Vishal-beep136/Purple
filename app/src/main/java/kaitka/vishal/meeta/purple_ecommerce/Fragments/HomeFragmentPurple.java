@@ -1,11 +1,13 @@
 package kaitka.vishal.meeta.purple_ecommerce.Fragments;
 
 
+
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,6 +25,7 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import java.util.List;
 
+import kaitka.vishal.meeta.purple_ecommerce.Activites.MainActivity;
 import kaitka.vishal.meeta.purple_ecommerce.Adapters.CategoryAdapter;
 import kaitka.vishal.meeta.purple_ecommerce.Adapters.HomePageAdapter;
 import kaitka.vishal.meeta.purple_ecommerce.Adapters.SliderAdapter;
@@ -138,6 +141,8 @@ public class HomeFragmentPurple extends Fragment {
         connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         networkInfo = connectivityManager.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected() == true) {
+
+            MainActivity.drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
             noInternetConnection.setVisibility(View.GONE);
             retryBtn.setVisibility(View.GONE);
             categoryRecyclerView.setVisibility(View.VISIBLE);
@@ -163,6 +168,7 @@ public class HomeFragmentPurple extends Fragment {
             homePageRecyclerView.setAdapter(adapter);
         }
         else {
+            MainActivity.drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             categoryRecyclerView.setVisibility(View.GONE);
             homePageRecyclerView.setVisibility(View.GONE);
 
@@ -191,6 +197,7 @@ public class HomeFragmentPurple extends Fragment {
         loadedCategoriesName.clear();
 
         if (networkInfo != null && networkInfo.isConnected() == true) {
+            MainActivity.drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
             noInternetConnection.setVisibility(View.GONE);
             retryBtn.setVisibility(View.GONE);
             categoryRecyclerView.setVisibility(View.VISIBLE);
@@ -207,6 +214,7 @@ public class HomeFragmentPurple extends Fragment {
             loadFragmentData(homePageRecyclerView, getContext(), 0, "Home");
         }
         else {
+            MainActivity.drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             Toast.makeText(getContext(), "Please connect to internet!", Toast.LENGTH_SHORT).show();
             categoryRecyclerView.setVisibility(View.GONE);
             homePageRecyclerView.setVisibility(View.GONE);

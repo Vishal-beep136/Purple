@@ -48,12 +48,11 @@ public class GridProductLayoutAdapter extends BaseAdapter {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.horizontal_scroll_item_layout, null);
             view.setElevation(0);
             view.setBackgroundColor(Color.parseColor("#ffffff"));
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent productDetailsIntent = new Intent(parent.getContext(), ProductDetailsActivity.class);
-                    parent.getContext().startActivity(productDetailsIntent);
-                }
+            view.setOnClickListener(v -> {
+                Intent productDetailsIntent = new Intent(parent.getContext(), ProductDetailsActivity.class);
+                productDetailsIntent.putExtra("PRODUCT_ID",horizontalProductScrollModelList.get(position).getProductID());
+
+                parent.getContext().startActivity(productDetailsIntent);
             });
 
 

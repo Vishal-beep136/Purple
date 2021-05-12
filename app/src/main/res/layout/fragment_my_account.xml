@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".Fragments.MyAccountFragment">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -27,5 +27,5 @@
                 android:text="Sign Out"/>
 
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 </FrameLayout>

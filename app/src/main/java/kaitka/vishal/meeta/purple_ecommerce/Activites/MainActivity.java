@@ -22,6 +22,8 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -42,7 +44,6 @@ import kaitka.vishal.meeta.purple_ecommerce.Fragments.MyWishlistFragment;
 import kaitka.vishal.meeta.purple_ecommerce.R;
 
 import static kaitka.vishal.meeta.purple_ecommerce.Activites.RegisterActivity.setSignUpFragment;
-import static kaitka.vishal.meeta.purple_ecommerce.DBqueries.currentUser;
 import static kaitka.vishal.meeta.purple_ecommerce.Fragments.SignInFragment.disableCloseBtn;
 import static kaitka.vishal.meeta.purple_ecommerce.Fragments.SignUpFragment.disableCloseBtnSignUp;
 
@@ -64,6 +65,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Window window;
     private Toolbar toolbar;
     private Dialog signInDialog;
+    private FirebaseUser currentUser;
+
+    public static DrawerLayout drawer;
 
     @SuppressLint("WrongConstant")
     @Override
@@ -77,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -96,14 +100,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             drawer.addDrawerListener(toggle);
             toggle.syncState();
             setFragment(new HomeFragmentPurple(), HOME_FRAGMENT);
-        }
-
-        //todo here you can get error so the video timestamp is 15:00 remember must check here and do research.the if else statement.
-        //if else statement for unEnabled and Enabled the sign out btn in navigation drawer
-        if (currentUser == null) {
-            navigationView.getMenu().getItem(navigationView.getMenu().size() - 2).setEnabled(false);
-        } else {
-            navigationView.getMenu().getItem(navigationView.getMenu().size() - 2).setEnabled(true);
         }
 
         //sign in dialog is start from here
@@ -141,6 +137,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        //todo here you can get error so the video timestamp is 15:00 remember must check here and do research.the if else statement.
+        //if else statement for unEnabled and Enabled the sign out btn in navigation drawer
+        if (currentUser == null) {
+            navigationView.getMenu().getItem(navigationView.getMenu().size() - 2).setEnabled(false);
+        } else {
+            navigationView.getMenu().getItem(navigationView.getMenu().size() - 2).setEnabled(true);
+        }
 
     }
 
@@ -253,7 +264,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 gotoFragment("My Account", new MyAccountFragment(), ACCOUNT_FRAGMENT);
 
             } else if (id == R.id.log_out) {
-
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(MainActivity.this, RegisterActivity.class));
+                finish();
             }
             //todo: in future you have to do some changes in here ok so, for now I am going to place the return here and close drawer method.
             drawer.closeDrawer(GravityCompat.START);
