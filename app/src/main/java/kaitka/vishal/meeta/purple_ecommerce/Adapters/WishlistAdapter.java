@@ -44,6 +44,7 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        String productId = wishlistModelList.get(position).getProductId();
         String resourse = wishlistModelList.get(position).getProductImage();
         String title = wishlistModelList.get(position).getProductTitle();
         Long freeCoupens = wishlistModelList.get(position).getFreeCoupens();
@@ -53,7 +54,7 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
         String cuttedPrice = wishlistModelList.get(position).getCuttedPrice();
         Boolean paymentMethod = wishlistModelList.get(position).isCOD();
 
-        holder.setData(resourse,title,freeCoupens,rating,totalRatings,productPrice,cuttedPrice,paymentMethod,position);
+        holder.setData(productId, resourse, title, freeCoupens, rating, totalRatings, productPrice, cuttedPrice, paymentMethod, position);
 
         if (lastPosition < position) {
             Animation animation = AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.fade_in);
@@ -68,7 +69,7 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
         return wishlistModelList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView productImage;
         private TextView productTitle;
         private TextView freeCoupens;
@@ -97,7 +98,8 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
 
 
         }
-        private void setData(String resourse, String title, Long freeCoupensNo, String avearageRate, Long totalRatingsNo, String price, String cuttedPriceValue, Boolean COD, int index){
+
+        private void setData(String productId, String resourse, String title, Long freeCoupensNo, String avearageRate, Long totalRatingsNo, String price, String cuttedPriceValue, Boolean COD, int index) {
 
             Glide.with(itemView.getContext())
                     .load(resourse)
@@ -105,46 +107,47 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
                     .into(productImage);
 
             productTitle.setText(title);
-            if (freeCoupensNo != 0){
+            if (freeCoupensNo != 0) {
                 coupenIcon.setVisibility(View.VISIBLE);
                 if (freeCoupensNo == 1) {
                     freeCoupens.setText("free " + freeCoupensNo + " coupen");
-                }
-                else {
+                } else {
                     freeCoupens.setText("free " + freeCoupensNo + " coupens");
                 }
 
-            }
-            else {
+            } else {
                 coupenIcon.setVisibility(View.INVISIBLE);
                 freeCoupens.setVisibility(View.INVISIBLE);
 
             }
             rating.setText(avearageRate);
-            totalRatings.setText("("+ totalRatingsNo +")");
-            productPrice.setText("₹"+price+".00/-");
-            cuttedPrice.setText("₹"+cuttedPriceValue+".00 /-");
-            if (COD){
+            totalRatings.setText("(" + totalRatingsNo + ")");
+            productPrice.setText("₹" + price + ".00/-");
+            cuttedPrice.setText("₹" + cuttedPriceValue + ".00 /-");
+            if (COD) {
                 paymentMethod.setVisibility(View.VISIBLE);
-            }
-            else {
+            } else {
                 paymentMethod.setVisibility(View.INVISIBLE);
             }
-            if (wishlist){
+            if (wishlist) {
                 deleteBtn.setVisibility(View.VISIBLE);
 
-            }
-            else {
+            } else {
                 deleteBtn.setVisibility(View.GONE);
             }
 
             deleteBtn.setOnClickListener(v -> {
-                deleteBtn.setEnabled(false);
-                DBqueries.removeFromWishlist(index,itemView.getContext());
+                if (!ProductDetailsActivity.running_wishlist_query) {
+                    ProductDetailsActivity.running_wishlist_query = true;
+                    DBqueries.removeFromWishlist(index, itemView.getContext());
+                }
             });
 
-            itemView.setOnClickListener(v -> {
+            itemView.setOnClickListener(v ->
+
+            {
                 Intent productDetailsIntent = new Intent(itemView.getContext(), ProductDetailsActivity.class);
+                productDetailsIntent.putExtra("PRODUCT_ID", productId);
                 itemView.getContext().startActivity(productDetailsIntent);
             });
         }

@@ -36,6 +36,8 @@ import kaitka.vishal.meeta.purple_ecommerce.Modellls.HorizontalProductScrollMode
 import kaitka.vishal.meeta.purple_ecommerce.Modellls.SliderModel;
 import kaitka.vishal.meeta.purple_ecommerce.Modellls.WishlistModel;
 
+import static kaitka.vishal.meeta.purple_ecommerce.Activites.ProductDetailsActivity.productId;
+
 public class DBqueries {
 
 
@@ -51,6 +53,7 @@ public class DBqueries {
 
     //this load categories method.
     public static void loadCategories(RecyclerView categoryRecyclerView, final Context context) {
+        categoryModelList.clear();
         firebaseFirestore.collection("CATEGORIES").orderBy("index").get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -116,6 +119,7 @@ public class DBqueries {
                                     ));
 
                                     viewAllProductList.add(new WishlistModel(
+                                            documentSnapshot.get("product_ID_" + x).toString(),
                                             documentSnapshot.get("product_image_" + x).toString(),
                                             documentSnapshot.get("product_full_title_" + x).toString(),
                                             (Long) documentSnapshot.get("free_coupens_" + x),
@@ -164,6 +168,7 @@ public class DBqueries {
     //this is load wishlist method.
     public static void loadWishlist(Context context, final ProgressDialog dialog, final boolean loadProductData) {
 
+        wishlist.clear();
         firebaseFirestore.collection("USERS")
                 .document(FirebaseAuth.getInstance().getUid())
                 .collection("USER_DATA")
@@ -174,7 +179,7 @@ public class DBqueries {
                         for (long x = 0; x < (Long) task.getResult().get("list_size"); x++) {
                             wishlist.add(task.getResult().get("product_ID_" + x).toString());
 
-                            if (DBqueries.wishlist.contains(ProductDetailsActivity.productId)) {
+                            if (DBqueries.wishlist.contains(productId)) {
                                 ProductDetailsActivity.ALREADY_ADDED_TO_WISHLIST = true;
                                 if (ProductDetailsActivity.addToWishlistBtn != null) {
                                     ProductDetailsActivity.addToWishlistBtn.setSupportImageTintList(context.getResources().getColorStateList(R.color.colorPrimary));
@@ -187,11 +192,13 @@ public class DBqueries {
                             }
 
                             if (loadProductData) {
+                                wishlistModelList.clear();
                                 firebaseFirestore.collection("PRODUCTS")
                                         .document(task.getResult().get("product_ID_" + x).toString())
-                                        .get().addOnCompleteListener(task1 -> {
+                                        .get().addOnCompleteListener((Task<DocumentSnapshot> task1) -> {
                                     if (task1.isSuccessful()) {
                                         wishlistModelList.add(new WishlistModel(
+                                                productId,
                                                 task1.getResult().get("product_image_1").toString(),
                                                 task1.getResult().get("product_title_1").toString(),
                                                 (Long) task1.getResult().get("free_coupens"),
@@ -252,9 +259,8 @@ public class DBqueries {
                     String error = task.getException().getMessage();
                     Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
                 }
-                if (ProductDetailsActivity.addToWishlistBtn != null) {
-                    ProductDetailsActivity.addToWishlistBtn.setEnabled(true);
-                }
+
+                ProductDetailsActivity.running_wishlist_query = false;
             }
         });
 
