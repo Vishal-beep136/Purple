@@ -1,5 +1,6 @@
 package kaitka.vishal.meeta.purple_ecommerce.Fragments;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import kaitka.vishal.meeta.purple_ecommerce.Adapters.WishlistAdapter;
+import kaitka.vishal.meeta.purple_ecommerce.DBqueries;
 import kaitka.vishal.meeta.purple_ecommerce.Modellls.WishlistModel;
 import kaitka.vishal.meeta.purple_ecommerce.R;
 
@@ -35,6 +37,8 @@ public class MyWishlistFragment extends Fragment {
     }
 
     private RecyclerView wishlistRecyclerView;
+    private ProgressDialog dialog;
+    public static WishlistAdapter wishlistAdapter;
 
 
 
@@ -43,15 +47,28 @@ public class MyWishlistFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_my_wishlist, container, false);
+        //defining the dialog and remember t code studio doesn't do like so this type of work you are done by you ok!
+        dialog = new ProgressDialog(getContext(), R.style.AppCompatAlertDialogStyle);
+        dialog.setIcon(R.drawable.ic_like_heart);
+        dialog.setMessage("Loading...");
+        dialog.setCancelable(false);
+        dialog.show();
         wishlistRecyclerView = view.findViewById(R.id.my_wishlist_recyclerview);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         wishlistRecyclerView.setLayoutManager(linearLayoutManager);
 
-        List<WishlistModel> wishlistModelList = new ArrayList<>();
+        if (DBqueries.wishlistModelList.size() == 0){
+            DBqueries.wishlist.clear();
+            DBqueries.loadWishlist(getContext(), dialog, true);
+        }
+        else {
+            dialog.dismiss();
+        }
 
-        WishlistAdapter wishlistAdapter = new WishlistAdapter(wishlistModelList,true);
+
+        wishlistAdapter = new WishlistAdapter(DBqueries.wishlistModelList,true);
         wishlistRecyclerView.setAdapter(wishlistAdapter);
         wishlistAdapter.notifyDataSetChanged();
 

@@ -35,6 +35,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import kaitka.vishal.meeta.purple_ecommerce.DBqueries;
 import kaitka.vishal.meeta.purple_ecommerce.Fragments.HomeFragmentPurple;
 import kaitka.vishal.meeta.purple_ecommerce.Fragments.MyAccountFragment;
 import kaitka.vishal.meeta.purple_ecommerce.Fragments.MyCartFragment;
@@ -265,6 +266,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             } else if (id == R.id.log_out) {
                 FirebaseAuth.getInstance().signOut();
+                DBqueries.clearData();
                 startActivity(new Intent(MainActivity.this, RegisterActivity.class));
                 finish();
             }
