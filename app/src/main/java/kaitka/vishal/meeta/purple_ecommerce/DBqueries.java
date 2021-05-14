@@ -275,39 +275,36 @@ public class DBqueries {
     }
 
     public static void loadRatingList(Context context) {
-        myRatedIds.clear();
+        if (!ProductDetailsActivity.running_rating_query) {
 
-        myRating.clear();
+            ProductDetailsActivity.running_rating_query = true;
 
-        firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid()).collection("USER_DATA")
-                .document("MY_RATINGS").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+            myRatedIds.clear();
+            myRating.clear();
 
+            firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid()).collection("USER_DATA")
+                    .document("MY_RATINGS").get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
-
                     for (long x = 0; x < (long) task.getResult().get("list_size"); x++) {
-                        myRatedIds.add(task.getResult().get("product_ID_"+x).toString());
-                        myRating.add((long) task.getResult().get("rating_"+x));
+                        myRatedIds.add(task.getResult().get("product_ID_" + x).toString());
+                        myRating.add((long) task.getResult().get("rating_" + x));
 
-                        if (task.getResult().get("product_ID_"+x).toString().equals(productId) && ProductDetailsActivity.rateNowContainer != null){
-
-                            ProductDetailsActivity.initialRating = Integer.parseInt(String.valueOf((long) task.getResult().get("rating_"+x))) - 1;
-
-                            ProductDetailsActivity.setRating(initialRating);
-
+                        if (task.getResult().get("product_ID_" + x).toString().equals(productId)) {
+                            ProductDetailsActivity.initialRating = Integer.parseInt(String.valueOf((long) task.getResult().get("rating_" + x))) - 1;
+                            if (ProductDetailsActivity.rateNowContainer != null) {
+                                ProductDetailsActivity.setRating(initialRating);
+                            }
                         }
-
                     }
                 } else {
-
                     String error = task.getException().getMessage().toUpperCase();
                     Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
-
                 }
-            }
-        });
+                ProductDetailsActivity.running_rating_query = false;
+            });
+        }
     }
+
 
     //this is clearData method.
     public static void clearData() {
