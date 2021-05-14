@@ -36,6 +36,7 @@ import kaitka.vishal.meeta.purple_ecommerce.Modellls.HorizontalProductScrollMode
 import kaitka.vishal.meeta.purple_ecommerce.Modellls.SliderModel;
 import kaitka.vishal.meeta.purple_ecommerce.Modellls.WishlistModel;
 
+import static kaitka.vishal.meeta.purple_ecommerce.Activites.ProductDetailsActivity.initialRating;
 import static kaitka.vishal.meeta.purple_ecommerce.Activites.ProductDetailsActivity.productId;
 
 public class DBqueries {
@@ -290,7 +291,11 @@ public class DBqueries {
                         myRating.add((long) task.getResult().get("rating_"+x));
 
                         if (task.getResult().get("product_ID_"+x).toString().equals(productId) && ProductDetailsActivity.rateNowContainer != null){
-                            ProductDetailsActivity.setRating(Integer.parseInt(String.valueOf((long) task.getResult().get("rating_"+x))) - 1);
+
+                            ProductDetailsActivity.initialRating = Integer.parseInt(String.valueOf((long) task.getResult().get("rating_"+x))) - 1;
+
+                            ProductDetailsActivity.setRating(initialRating);
+
                         }
 
                     }
