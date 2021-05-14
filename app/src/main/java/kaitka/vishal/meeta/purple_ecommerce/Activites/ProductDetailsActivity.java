@@ -80,7 +80,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private String productOthersDetails;
 
     /////rating layout starts here
-    private LinearLayout rateNowContainer;
+    public static LinearLayout rateNowContainer;
     private TextView totalRatings;
     private LinearLayout ratingsNoContainer;
     private TextView totalRatingsFigure;
@@ -235,6 +235,9 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 productDetailsViewPager.setAdapter(new ProductDetailsAdapter(ProductDetailsActivity.this.getSupportFragmentManager(), productDetailsTabLayout.getTabCount(), productDescription, productOthersDetails, productSpecificationModelList));
 
                 if (currentUser != null) {
+                    if (DBqueries.myRating.size() == 0) {
+                        DBqueries.loadRatingList(ProductDetailsActivity.this);
+                    }
                     if (DBqueries.wishlist.size() == 0) {
                         DBqueries.loadWishlist(ProductDetailsActivity.this, dialog, false);
                     } else {
@@ -495,11 +498,17 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
         //this if else statement is for wishlist
         if (currentUser != null) {
+            if (DBqueries.myRating.size() == 0) {
+                DBqueries.loadRatingList(ProductDetailsActivity.this);
+            }
+
             if (DBqueries.wishlist.size() == 0) {
                 DBqueries.loadWishlist(ProductDetailsActivity.this, dialog, false);
-            } else {
+            }
+            else {
                 dialog.dismiss();
             }
+
         } else {
             dialog.dismiss();
         }
@@ -526,7 +535,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         }
     } //showDialogRecyclerView
 
-    private void setRating(int startPostion) {
+    public static void setRating(int startPostion) {
         for (int x = 0; x < rateNowContainer.getChildCount(); x++) {
             ImageView starBtn = (ImageView) rateNowContainer.getChildAt(x);
             starBtn.setImageTintList(ColorStateList.valueOf(Color.parseColor("#bebebe")));

@@ -41,6 +41,8 @@ import static kaitka.vishal.meeta.purple_ecommerce.Activites.ProductDetailsActiv
 public class DBqueries {
 
 
+    //Defining Section START here
+
     public static FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     public static List<CategoryModel> categoryModelList = new ArrayList<>();
 //    public static List<HomePageModel> homePageModelList = new ArrayList<>();
@@ -49,6 +51,10 @@ public class DBqueries {
     public static List<String> loadedCategoriesName = new ArrayList<>();
     public static List<String> wishlist = new ArrayList<>();
     public static List<WishlistModel> wishlistModelList = new ArrayList<>();
+    public static List<String> myRatedIds = new ArrayList<>();
+    public static List<Long> myRating = new ArrayList<>();
+
+    //Defining Section END here
 
 
     //this load categories method.
@@ -228,6 +234,7 @@ public class DBqueries {
                 });
     }
 
+    //this is removeFromWishlist method.
     public static void removeFromWishlist(int index, final Context context) {
         wishlist.remove(index);
         Map<String, Object> updateWishlist = new HashMap<>();
@@ -266,6 +273,38 @@ public class DBqueries {
 
     }
 
+    public static void loadRatingList(Context context) {
+        myRatedIds.clear();
+
+        myRating.clear();
+
+        firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid()).collection("USER_DATA")
+                .document("MY_RATINGS").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                if (task.isSuccessful()) {
+
+                    for (long x = 0; x < (long) task.getResult().get("list_size"); x++) {
+                        myRatedIds.add(task.getResult().get("product_ID_"+x).toString());
+                        myRating.add((long) task.getResult().get("rating_"+x));
+
+                        if (task.getResult().get("product_ID_"+x).toString().equals(productId) && ProductDetailsActivity.rateNowContainer != null){
+                            ProductDetailsActivity.setRating(Integer.parseInt(String.valueOf((long) task.getResult().get("rating_"+x))) - 1);
+                        }
+
+                    }
+                } else {
+
+                    String error = task.getException().getMessage().toUpperCase();
+                    Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
+
+                }
+            }
+        });
+    }
+
+    //this is clearData method.
     public static void clearData() {
         categoryModelList.clear();
         lists.clear();
