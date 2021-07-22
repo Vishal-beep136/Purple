@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "186685008130",
-    "project_id": "purple-e-commerce",
-    "storage_bucket": "purple-e-commerce.appspot.com"
+    "project_number": "",
+    "project_id": "",
+    "storage_bucket": ""
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:186685008130:android:4a450938d9bd331b08fa1b",
+        "mobilesdk_app_id": "",
         "android_client_info": {
-          "package_name": "kaitka.vishal.meeta.purple_ecommerce"
+          "package_name": ""
         }
       },
       "oauth_client": [
         {
-          "client_id": "186685008130-2j2mtlknrcn0nuiqgpfjnlopcmjnp0k4.apps.googleusercontent.com",
+          "client_id": "",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBPeU3thU2ZxnfXCeoiCPpDSQmWDNUcG68"
+          "current_key": ""
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "186685008130-2j2mtlknrcn0nuiqgpfjnlopcmjnp0k4.apps.googleusercontent.com",
+              "client_id": "",
               "client_type": 3
             }
           ]
